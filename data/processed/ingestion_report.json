@@ -1,0 +1,13 @@
+{
+  "records_loaded": 250,
+  "valid_records": 250,
+  "invalid_records_count": 0,
+  "invalid_records_details": [],
+  "duplicate_records_skipped": 0,
+  "final_indexed_chunks": 256,
+  "columns_detected": [
+    "question",
+    "answer"
+  ],
+  "status": "SUCCESS"
+}

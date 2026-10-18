@@ -1,0 +1,21 @@
+[
+  {
+    "doc_id": "SMU-FAQ-001-C1",
+    "chunk_id": "SMU-FAQ-001-C1",
+    "parent_id": "SMU-FAQ-001",
+    "faq_id": "SMU-FAQ-001",
+    "row_id": "Where is SMU?",
+    "category": "General University Services",
+    "domain": "General University Services",
+    "subdomain": "Campus Policies & General Inquiries",
+    "question": "Halifax",
+    "original_question": "Halifax",
+    "answer": "NS",
+    "text": "Question: Halifax\nAnswer: NS",
+    "chunk_index": 1,
+    "total_chunks": 1,
+    "chunk_count": 1,
+    "word_count": 4,
+    "source": "SMU FAQ Official Archive (SMU-FAQ-001)"
+  }
+]

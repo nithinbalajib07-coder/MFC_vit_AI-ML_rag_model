@@ -1,0 +1,1 @@
+"""Normal FAQ regression package."""

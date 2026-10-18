@@ -1,0 +1,26 @@
+{
+  "records_loaded": 4,
+  "valid_records": 2,
+  "invalid_records_count": 2,
+  "invalid_records_details": [
+    {
+      "row_index": 1,
+      "reason": "Question field is missing or empty.",
+      "raw": "{'question': nan, 'answer': 'Empty Question'}"
+    },
+    {
+      "row_index": 2,
+      "reason": "Answer field is missing or empty.",
+      "raw": "{'question': 'Whitespace Q?', 'answer': '   '}"
+    }
+  ],
+  "duplicate_records_skipped": 0,
+  "final_indexed_chunks": 2,
+  "columns_detected": [
+    "question",
+    "answer"
+  ],
+  "status": "SUCCESS",
+  "total_loaded": 4,
+  "invalid_records": 2
+}

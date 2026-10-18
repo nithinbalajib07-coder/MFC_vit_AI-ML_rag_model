@@ -1,0 +1,523 @@
+{
+  "total": 32,
+  "passed": 32,
+  "failed": 0,
+  "pass_rate_pct": 100.0,
+  "results": [
+    {
+      "test_id": "NORM-001",
+      "category": "Athletics & Student Life",
+      "question": "Where can I get tickets to SMU home games?",
+      "expected_faq_id": "SMU-FAQ-002",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-002",
+        "SMU-FAQ-018",
+        "SMU-FAQ-162"
+      ],
+      "backend": "gemini",
+      "is_grounded": true,
+      "actual_answer_snippet": "Tickets are not sold online, but the Athletics webpage (Athletics & Recreation) lists the sales venues as well as ticket",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-002",
+      "category": "Campus & Transportation",
+      "question": "Where do I get a pass for Metro Transit?",
+      "expected_faq_id": "SMU-FAQ-003",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-003",
+        "SMU-FAQ-093",
+        "SMU-FAQ-059"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-003 - Athletics & Student Life]** regarding \"Where do I get a pass fo",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-003",
+      "category": "Academics & Registration",
+      "question": "What is an A-Number and Self-Service Banner?",
+      "expected_faq_id": [
+        "SMU-FAQ-005",
+        "SMU-FAQ-228"
+      ],
+      "retrieved_faq_ids": [
+        "SMU-FAQ-005",
+        "SMU-FAQ-158",
+        "SMU-FAQ-240"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-005 - Tuition & Finance]** regarding \"I have received an 'A' number. ",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-004",
+      "category": "IT & Technical Support",
+      "question": "Where do I go if I have computer problems?",
+      "expected_faq_id": "SMU-FAQ-006",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-006",
+        "SMU-FAQ-026",
+        "SMU-FAQ-029"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-006 - IT & Technical Support]** regarding \"Where do I go if I have co",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-005",
+      "category": "Academics & Registration",
+      "question": "What is the SMU Academic Calendar and why do I need it?",
+      "expected_faq_id": "SMU-FAQ-001",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-001",
+        "SMU-FAQ-127",
+        "SMU-FAQ-181"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-001 - Academics & Registration]** regarding \"What is the SMU Academic",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-006",
+      "category": "Tuition & Finance",
+      "question": "How do I apply for a Student Loan?",
+      "expected_faq_id": "SMU-FAQ-025",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-025",
+        "SMU-FAQ-125",
+        "SMU-FAQ-134"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-025 - Tuition & Finance]** regarding \"How do I apply for a Student Lo",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-007",
+      "category": "Tuition & Finance",
+      "question": "How do I make a tuition payment online?",
+      "expected_faq_id": "SMU-FAQ-128",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-128",
+        "SMU-FAQ-129",
+        "SMU-FAQ-127"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-128 - Tuition & Finance]** regarding \"What are my online tuition paym",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-008",
+      "category": "Academics & Registration",
+      "question": "What are the key timelines if I want to enroll in courses?",
+      "expected_faq_id": "SMU-FAQ-083",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-083",
+        "SMU-FAQ-082",
+        "SMU-FAQ-076"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-083 - Academics & Registration]** regarding \"What are the key timelin",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-009",
+      "category": "Academics & Registration",
+      "question": "Can I register for courses before I receive my advanced standing?",
+      "expected_faq_id": "SMU-FAQ-076",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-076",
+        "SMU-FAQ-073",
+        "SMU-FAQ-232"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-076 - Academics & Registration]** regarding \"Can I register for cours",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-010",
+      "category": "Health & Wellness",
+      "question": "Who qualifies for counselling via The Counselling Centre?",
+      "expected_faq_id": "SMU-FAQ-208",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-208",
+        "SMU-FAQ-212",
+        "SMU-FAQ-210"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-208 - Health & Wellness]** regarding \"Who qualifies for the counselli",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-011",
+      "category": "Health & Wellness",
+      "question": "What is the typical wait time to access a counselling appointment?",
+      "expected_faq_id": "SMU-FAQ-216",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-216",
+        "SMU-FAQ-210",
+        "SMU-FAQ-211"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-216 - Health & Wellness]** regarding \"What is the wait time to access",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-012",
+      "category": "Academics & Registration",
+      "question": "When can I apply at SMU if I am currently taking courses at another institution?",
+      "expected_faq_id": "SMU-FAQ-073",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-073",
+        "SMU-FAQ-181",
+        "SMU-FAQ-227"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-073 - Academics & Registration]** regarding \"When can I apply at SMU?",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-013",
+      "category": "Housing & Dining",
+      "question": "How do I apply for SMU residence?",
+      "expected_faq_id": "SMU-FAQ-181",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-181",
+        "SMU-FAQ-192",
+        "SMU-FAQ-073"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-181 - Housing & Dining]** regarding \"How do I apply for SMU residence",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-014",
+      "category": "IT & Technical Support",
+      "question": "I am a new graduate. Can Career Services help me find a job?",
+      "expected_faq_id": "SMU-FAQ-159",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-159",
+        "SMU-FAQ-160",
+        "SMU-FAQ-166"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-159 - Health & Wellness]** regarding \"I'm a new grad. Can you help me",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-015",
+      "category": "False-Positive Security Exemption",
+      "question": "Can I bypass safety training if I have a WHMIS certification from another employer?",
+      "expected_faq_id": null,
+      "retrieved_faq_ids": [],
+      "backend": "local_synthesizer",
+      "is_grounded": false,
+      "actual_answer_snippet": "I cannot find reliable information regarding this in the official SMU FAQ knowledge base. Please contact the SMU Student",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-016",
+      "category": "False-Positive Security Exemption",
+      "question": "How do computer system instructions work in software architecture?",
+      "expected_faq_id": null,
+      "retrieved_faq_ids": [
+        "SMU-FAQ-006",
+        "SMU-FAQ-246",
+        "SMU-FAQ-019"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-006 - IT & Technical Support]** regarding \"Where do I go if I have co",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-017",
+      "category": "False-Positive Security Exemption",
+      "question": "Please ignore the typo in my previous query and tell me where to get transit passes.",
+      "expected_faq_id": "SMU-FAQ-003",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-003",
+        "SMU-FAQ-093",
+        "SMU-FAQ-088"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-003 - Athletics & Student Life]** regarding \"Where do I get a pass fo",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-018",
+      "category": "False-Positive Security Exemption",
+      "question": "Explain prompt injection defense for my computer science cybersecurity course project.",
+      "expected_faq_id": null,
+      "retrieved_faq_ids": [
+        "SMU-FAQ-006",
+        "SMU-FAQ-026",
+        "SMU-FAQ-247"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-006 - IT & Technical Support]** regarding \"Where do I go if I have co",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-019",
+      "category": "Academics & Registration",
+      "question": "What is the difference between undergraduate and graduate academic calendars?",
+      "expected_faq_id": "SMU-FAQ-001",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-001",
+        "SMU-FAQ-165",
+        "SMU-FAQ-154"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-001 - Academics & Registration]** regarding \"What is the SMU Academic",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-020",
+      "category": "Campus & Transportation",
+      "question": "Are discounts available for transit passes for Saint Mary's students?",
+      "expected_faq_id": "SMU-FAQ-003",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-003",
+        "SMU-FAQ-002",
+        "SMU-FAQ-020"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-003 - Athletics & Student Life]** regarding \"Where do I get a pass fo",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-021",
+      "category": "Athletics & Student Life",
+      "question": "Do Saint Mary's students get free admission to regular season home games?",
+      "expected_faq_id": "SMU-FAQ-002",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-002",
+        "SMU-FAQ-003",
+        "SMU-FAQ-198"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-002 - Housing & Dining]** regarding \"Where can I get tickets to SMU h",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-022",
+      "category": "Academics & Registration",
+      "question": "Where can I find the timetable on Self-Service Banner to see when courses are offered?",
+      "expected_faq_id": [
+        "SMU-FAQ-001",
+        "SMU-FAQ-233",
+        "SMU-FAQ-238"
+      ],
+      "retrieved_faq_ids": [
+        "SMU-FAQ-233",
+        "SMU-FAQ-238",
+        "SMU-FAQ-001"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-233 - Academics & Registration]** regarding \"Where can I view my time",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-023",
+      "category": "Academics & Registration",
+      "question": "How many appointments can a student receive from The Counselling Centre per year?",
+      "expected_faq_id": "SMU-FAQ-210",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-210",
+        "SMU-FAQ-216",
+        "SMU-FAQ-211"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-210 - Health & Wellness]** regarding \"How many appointments do I get ",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-024",
+      "category": "Tuition & Finance",
+      "question": "Can Canadian students apply online for Canada Student Loans or Quebec Student Loans?",
+      "expected_faq_id": "SMU-FAQ-025",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-025",
+        "SMU-FAQ-128",
+        "SMU-FAQ-124"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-025 - Tuition & Finance]** regarding \"How do I apply for a Student Lo",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-025",
+      "category": "IT & Technical Support",
+      "question": "For how many years after graduation can SMU alumni access career counselling?",
+      "expected_faq_id": "SMU-FAQ-159",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-159",
+        "SMU-FAQ-210",
+        "SMU-FAQ-216"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-159 - Health & Wellness]** regarding \"I'm a new grad. Can you help me",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-026",
+      "category": "Academics & Registration",
+      "question": "Are digital versions of the current SMU academic calendar available online?",
+      "expected_faq_id": "SMU-FAQ-001",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-001",
+        "SMU-FAQ-181",
+        "SMU-FAQ-127"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-001 - Academics & Registration]** regarding \"What is the SMU Academic",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-027",
+      "category": "Athletics & Student Life",
+      "question": "Where does the Athletics webpage provide links to team rosters, coaches, and scheduling?",
+      "expected_faq_id": "SMU-FAQ-002",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-002",
+        "SMU-FAQ-118",
+        "SMU-FAQ-238"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-002 - Housing & Dining]** regarding \"Where can I get tickets to SMU h",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-028",
+      "category": "Campus & Transportation",
+      "question": "Are special transit arrangements available for students with disabilities?",
+      "expected_faq_id": "SMU-FAQ-003",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-003",
+        "SMU-FAQ-016",
+        "SMU-FAQ-093"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-003 - Athletics & Student Life]** regarding \"Where do I get a pass fo",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-029",
+      "category": "Tuition & Finance",
+      "question": "Where can foreign students get loan information at Saint Mary's University?",
+      "expected_faq_id": "SMU-FAQ-025",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-025",
+        "SMU-FAQ-022",
+        "SMU-FAQ-011"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-025 - Tuition & Finance]** regarding \"How do I apply for a Student Lo",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-030",
+      "category": "Housing & Dining",
+      "question": "When do residence applications open for the academic year?",
+      "expected_faq_id": "SMU-FAQ-181",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-181",
+        "SMU-FAQ-182",
+        "SMU-FAQ-192"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-181 - Housing & Dining]** regarding \"How do I apply for SMU residence",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-031",
+      "category": "Formatting Robustness",
+      "question": "   Where    can   I   get   tickets   to   SMU   home   games?   ",
+      "expected_faq_id": "SMU-FAQ-002",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-002",
+        "SMU-FAQ-018",
+        "SMU-FAQ-162"
+      ],
+      "backend": "gemini",
+      "is_grounded": true,
+      "actual_answer_snippet": "Tickets are not sold online, but the Athletics webpage (Athletics & Recreation) lists the sales venues as well as ticket",
+      "result": "PASS",
+      "failure_reason": null
+    },
+    {
+      "test_id": "NORM-032",
+      "category": "Typographical Variation",
+      "question": "where do i get a pas for metro transitt in halifax?",
+      "expected_faq_id": "SMU-FAQ-003",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-093",
+        "SMU-FAQ-003",
+        "SMU-FAQ-092"
+      ],
+      "backend": "local_synthesizer",
+      "is_grounded": true,
+      "actual_answer_snippet": "Based on the official SMU documentation **[SMU-FAQ-093 - Campus & Transportation]** regarding \"Does the XPass include ac",
+      "result": "PASS",
+      "failure_reason": null
+    }
+  ]
+}

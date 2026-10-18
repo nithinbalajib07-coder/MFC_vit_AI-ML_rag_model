@@ -1,0 +1,21 @@
+[
+  {
+    "doc_id": "SMU-FAQ-001-C1",
+    "chunk_id": "SMU-FAQ-001-C1",
+    "parent_id": "SMU-FAQ-001",
+    "faq_id": "SMU-FAQ-001",
+    "row_id": 0,
+    "category": "General University Services",
+    "domain": "General University Services",
+    "subdomain": "Campus Policies & General Inquiries",
+    "question": "How do I pay, and when?",
+    "original_question": "How do I pay, and when?",
+    "answer": "Pay online, via bank,\r\nor at the Service Centre.\"Quotes\".",
+    "text": "Question: How do I pay, and when?\nAnswer: Pay online, via bank,\r\nor at the Service Centre.\"Quotes\".",
+    "chunk_index": 1,
+    "total_chunks": 1,
+    "chunk_count": 1,
+    "word_count": 17,
+    "source": "SMU FAQ Official Archive (SMU-FAQ-001)"
+  }
+]

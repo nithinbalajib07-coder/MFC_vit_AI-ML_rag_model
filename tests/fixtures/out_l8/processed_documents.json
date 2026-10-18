@@ -1,0 +1,40 @@
+[
+  {
+    "doc_id": "SMU-FAQ-001-C1",
+    "chunk_id": "SMU-FAQ-001-C1",
+    "parent_id": "SMU-FAQ-001",
+    "faq_id": "SMU-FAQ-001",
+    "row_id": 0,
+    "category": "General University Services",
+    "domain": "General University Services",
+    "subdomain": "Campus Policies & General Inquiries",
+    "question": "Valid Q?",
+    "original_question": "Valid Q?",
+    "answer": "Valid Ans.",
+    "text": "Question: Valid Q?\nAnswer: Valid Ans.",
+    "chunk_index": 1,
+    "total_chunks": 1,
+    "chunk_count": 1,
+    "word_count": 6,
+    "source": "SMU FAQ Official Archive (SMU-FAQ-001)"
+  },
+  {
+    "doc_id": "SMU-FAQ-002-C1",
+    "chunk_id": "SMU-FAQ-002-C1",
+    "parent_id": "SMU-FAQ-002",
+    "faq_id": "SMU-FAQ-002",
+    "row_id": 3,
+    "category": "General University Services",
+    "domain": "General University Services",
+    "subdomain": "Campus Policies & General Inquiries",
+    "question": "Good Q2?",
+    "original_question": "Good Q2?",
+    "answer": "Good Ans2.",
+    "text": "Question: Good Q2?\nAnswer: Good Ans2.",
+    "chunk_index": 1,
+    "total_chunks": 1,
+    "chunk_count": 1,
+    "word_count": 6,
+    "source": "SMU FAQ Official Archive (SMU-FAQ-002)"
+  }
+]
