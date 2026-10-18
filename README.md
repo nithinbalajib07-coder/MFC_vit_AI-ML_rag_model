@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🎓 Saint Mary's University (SMU) Knowledge Assistant
 > **Production-Grade Retrieval-Augmented Generation (RAG) System** with Verifiable Citations, Hybrid Search, Cross-Encoder Reranking, Semantic Query Expansion, Caching, Adversarial Injection Defense, and 235-Point Verified Test Suite.
 
@@ -226,3 +227,6 @@ OPENAI_API_KEY=your_openai_api_key_here
 ```
 
 *(API keys are never logged, displayed in the UI, or committed to source control.)*
+=======
+# MFC_vit_AI-ML_rag_model
+>>>>>>> origin/main
