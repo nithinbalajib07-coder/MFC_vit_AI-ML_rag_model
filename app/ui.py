@@ -10,6 +10,7 @@ and multi-tier retrieval diagnostics.
 import html
 import math
 import streamlit as st
+import streamlit.components.v1 as components
 from src.pipeline import RAGPipeline
 
 st.set_page_config(
@@ -77,11 +78,83 @@ html, body, [class*="css"], .stApp {
     background-color: var(--main-bg) !important;
 }
 
-/* Streamlit chrome adjustments */
-#MainMenu, footer, header[data-testid="stHeader"] {
-    visibility: hidden;
-    height: 0;
+/* Streamlit chrome adjustments: hide deploy & 3-dot menu, PRESERVE toolbar & expand button */
+#MainMenu, 
+footer, 
+.stDeployButton, 
+[data-testid="stAppDeployButton"], 
+[data-testid="stDecoration"],
+[data-testid="stToolbarActions"],
+[data-testid="stStatusWidget"] {
+    visibility: hidden !important;
+    display: none !important;
+    height: 0 !important;
+    width: 0 !important;
 }
+
+header[data-testid="stHeader"] {
+    background: transparent !important;
+    height: 3.25rem !important;
+    z-index: 1000 !important;
+    pointer-events: none !important;
+}
+
+[data-testid="stToolbar"] {
+    visibility: visible !important;
+    display: flex !important;
+    height: 3.25rem !important;
+    background: transparent !important;
+    pointer-events: none !important;
+}
+
+/* Ensure the native sidebar expand button is ALWAYS visible, prominent, and clickable when collapsed */
+[data-testid="stExpandSidebarButton"],
+[data-testid="stSidebarCollapsedControl"] {
+    visibility: visible !important;
+    display: inline-flex !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    z-index: 999999 !important;
+    position: fixed !important;
+    top: 14px !important;
+    left: 14px !important;
+    background: #FFFFFF !important;
+    color: var(--primary-burgundy) !important;
+    border: 1.5px solid #8B123C !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 14px rgba(139, 18, 60, 0.18) !important;
+    padding: 6px 10px !important;
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-testid="stExpandSidebarButton"]:hover,
+[data-testid="stSidebarCollapsedControl"]:hover {
+    background: #8B123C !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 6px 18px rgba(139, 18, 60, 0.28) !important;
+}
+
+[data-testid="stExpandSidebarButton"] button,
+[data-testid="stSidebarCollapsedControl"] button {
+    color: inherit !important;
+    background: transparent !important;
+    border: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+}
+
+[data-testid="stExpandSidebarButton"] svg,
+[data-testid="stSidebarCollapsedControl"] svg {
+    color: inherit !important;
+    fill: currentColor !important;
+    stroke: currentColor !important;
+    width: 20px !important;
+    height: 20px !important;
+}
+
 .block-container {
     padding-top: 2rem !important;
     padding-bottom: 6rem !important;
@@ -101,7 +174,10 @@ input:focus-visible,
 [data-testid="stSidebar"] {
     background-color: var(--surface) !important;
     border-right: 1px solid var(--border) !important;
-    width: 320px !important;
+}
+[data-testid="stSidebar"][aria-expanded="true"] {
+    min-width: 320px !important;
+    max-width: 360px !important;
 }
 [data-testid="stSidebar"] .block-container {
     padding-top: 1.5rem !important;
@@ -752,6 +828,129 @@ input:focus-visible,
         width: 100% !important;
     }
 }
+
+/* ============================================================================
+   MINIMAL LOADING INDICATOR (Pure Text & Spinning Icon - No Effects)
+   ============================================================================ */
+@keyframes smuSpin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Base Spinner Elements (Global) - Simple inline/row layout, zero card borders/shadows */
+.stSpinner, [data-testid="stSpinner"] {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 8px !important;
+    margin: 8px auto !important;
+}
+
+.stSpinner > div,
+.stCacheSpinner > div,
+[data-testid="stSpinner"] > div {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    gap: 10px !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    width: auto !important;
+}
+
+/* Cache Resource Initial Load - Centered, purely text and spinning icon */
+.stCacheSpinner {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 99999 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+}
+
+/* Completely remove backdrop scrim */
+.stCacheSpinner::before {
+    display: none !important;
+    content: none !important;
+}
+
+/* Spinner SVG Icon - Standard rotating circle */
+.stSpinner svg,
+.stCacheSpinner svg,
+[data-testid="stSpinner"] svg {
+    width: 26px !important;
+    height: 26px !important;
+    color: #8B123C !important;
+    animation: smuSpin 0.85s linear infinite !important;
+    filter: none !important;
+}
+
+.stSpinner svg circle,
+.stCacheSpinner svg circle,
+[data-testid="stSpinner"] svg circle {
+    stroke: #8B123C !important;
+    stroke-width: 3px !important;
+}
+
+/* Loading Typography - Clean, readable standard font, no shimmer/effects */
+.stSpinner span,
+.stCacheSpinner span,
+[data-testid="stSpinner"] span,
+.stSpinner p,
+.stCacheSpinner p,
+[data-testid="stSpinner"] p {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    color: #163453 !important;
+    -webkit-text-fill-color: #163453 !important;
+    background: none !important;
+    text-align: left !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Elapsed Time Subtext */
+.stSpinner span:last-child[class*="seconds"],
+.stCacheSpinner span:last-child[class*="seconds"] {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.82rem !important;
+    font-weight: 400 !important;
+    color: var(--secondary-text) !important;
+    -webkit-text-fill-color: var(--secondary-text) !important;
+    background: none !important;
+    margin-left: 6px !important;
+}
+
+/* Remove all card badges and pseudo-element text */
+.stCacheSpinner > div::after,
+.stSpinner > div::after,
+[data-testid="stSpinner"] > div::after {
+    display: none !important;
+    content: none !important;
+}
 </style>
 """,
     unsafe_allow_html=True,
@@ -799,14 +998,14 @@ def meta_html(result: dict) -> str:
         bar_color = "#DC2626"  # red
         conf_label = "Low Confidence"
 
-    svg_lightning = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px; margin-right:4px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>'
+    svg_cache = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px; margin-right:4px;"><polyline points="20 6 9 17 4 12"></polyline></svg>'
     svg_clock = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px; margin-right:4px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>'
     svg_check = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px; margin-right:4px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>'
     svg_shield_alert = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px; margin-right:4px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>'
 
     if result.get("cached"):
         hit_type = html.escape(str(result.get("cache_hit_type", "exact")))
-        speed_badge = f"<span class='trust-chip cached'>{svg_lightning}Cache Hit · {hit_type}</span>"
+        speed_badge = f"<span class='trust-chip cached'>{svg_cache}Cache Hit · {hit_type}</span>"
     else:
         lat = result.get("latency_ms", 0)
         speed_badge = f"<span class='trust-chip neutral'>{svg_clock}{lat} ms</span>"
@@ -881,51 +1080,173 @@ def render_message(msg: dict, expand_sources: bool = False):
 
 
 def trigger_auto_scroll():
-    """Scroll smoothly down to the latest answer using standard st.html."""
-    scroll_js = """
-    <script>
-    (function() {
-        function scrollToAnswer() {
-            try {
-                const doc = (window.parent && window.parent.document) ? window.parent.document : document;
-                const anchor = doc.getElementById('latest-response-anchor');
-                if (anchor) {
-                    anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    return;
-                }
-                const msgs = doc.querySelectorAll('[data-testid="stChatMessage"]');
-                if (msgs.length > 0) {
-                    const lastMsg = msgs[msgs.length - 1];
-                    lastMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    return;
-                }
-                const scrollers = [
-                    doc.querySelector('[data-testid="stMain"]'),
-                    doc.querySelector('[data-testid="stAppViewContainer"]'),
-                    doc.querySelector('section.main'),
-                    doc.documentElement,
-                    doc.body
-                ];
-                for (const el of scrollers) {
-                    if (el && el.scrollHeight > el.clientHeight) {
-                        el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
-                        break;
+    """Scroll smoothly down to the latest query and response using components.html."""
+    components.html(
+        """
+        <script>
+        (function() {
+            function performScroll() {
+                try {
+                    const doc = window.parent.document;
+                    const queryAnchor = doc.getElementById('active-user-query') || doc.getElementById('latest-response-anchor');
+                    if (queryAnchor) {
+                        queryAnchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        return;
                     }
-                }
-            } catch (err) {
-                // Silently fallback if iframe sandbox limits scroll
+                    const chatMsgs = doc.querySelectorAll('[data-testid="stChatMessage"]');
+                    if (chatMsgs && chatMsgs.length > 0) {
+                        chatMsgs[chatMsgs.length - 1].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        return;
+                    }
+                    const scroller = doc.querySelector('[data-testid="stAppViewContainer"]') || 
+                                     doc.querySelector('[data-testid="stMain"]') || 
+                                     doc.querySelector('section.main') || 
+                                     window.parent;
+                    if (scroller && scroller.scrollTo) {
+                        scroller.scrollTo({ top: scroller.scrollHeight || 999999, behavior: 'smooth' });
+                    }
+                } catch (e) {}
             }
-        }
-        scrollToAnswer();
-        setTimeout(scrollToAnswer, 100);
-        setTimeout(scrollToAnswer, 300);
-    })();
-    </script>
-    """
-    st.html(scroll_js)
+            performScroll();
+            setTimeout(performScroll, 60);
+            setTimeout(performScroll, 200);
+            setTimeout(performScroll, 450);
+        })();
+        </script>
+        """,
+        height=0,
+        width=0,
+    )
+
 
 
 pipeline = get_pipeline()
+
+# ----------------------------------------------------------------------------
+# Floating & Accessible Sidebar Restore Button
+# ----------------------------------------------------------------------------
+sidebar_restore_button_js = """
+<script>
+(function() {
+    function triggerSidebarOpen() {
+        try {
+            const doc = window.parent.document;
+            const btn = doc.querySelector('[data-testid="stExpandSidebarButton"]') || 
+                        doc.querySelector('[data-testid="stExpandSidebarButton"] button') ||
+                        doc.querySelector('button[aria-label="Expand sidebar"]') ||
+                        doc.querySelector('[data-testid="stSidebarCollapsedControl"] button') ||
+                        doc.querySelector('[data-testid="stSidebarCollapsedControl"]');
+            if (btn) {
+                btn.click();
+                btn.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window.parent }));
+                return true;
+            }
+        } catch(e) {}
+        return false;
+    }
+
+    function initFloatingRestoreButton() {
+        try {
+            const doc = window.parent.document;
+            if (!doc) return;
+
+            let restoreBtn = doc.getElementById('smu-sidebar-restore-button');
+            if (!restoreBtn) {
+                restoreBtn = doc.createElement('button');
+                restoreBtn.id = 'smu-sidebar-restore-button';
+                restoreBtn.setAttribute('type', 'button');
+                restoreBtn.setAttribute('aria-label', 'Open left side panel (Search modes & Cache analytics)');
+                restoreBtn.title = 'Open Left Side Panel (Cache Analytics & Search Modes)';
+                restoreBtn.innerHTML = `
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                    <span>Side Panel</span>
+                `;
+
+                restoreBtn.style.cssText = `
+                    position: fixed !important;
+                    top: 14px !important;
+                    left: 14px !important;
+                    z-index: 9999999 !important;
+                    display: none;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    gap: 8px !important;
+                    background: #FFFFFF !important;
+                    color: #8B123C !important;
+                    border: 1.5px solid #8B123C !important;
+                    border-radius: 8px !important;
+                    padding: 8px 14px !important;
+                    font-family: 'Inter', -apple-system, sans-serif !important;
+                    font-size: 0.82rem !important;
+                    font-weight: 600 !important;
+                    letter-spacing: 0.02em !important;
+                    box-shadow: 0 4px 16px rgba(139, 18, 60, 0.2) !important;
+                    cursor: pointer !important;
+                    user-select: none !important;
+                    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+                `;
+
+                restoreBtn.addEventListener('mouseenter', function() {
+                    restoreBtn.style.background = '#8B123C';
+                    restoreBtn.style.color = '#FFFFFF';
+                    restoreBtn.style.boxShadow = '0 6px 20px rgba(139, 18, 60, 0.32)';
+                    restoreBtn.style.transform = 'translateY(-1px)';
+                });
+
+                restoreBtn.addEventListener('mouseleave', function() {
+                    restoreBtn.style.background = '#FFFFFF';
+                    restoreBtn.style.color = '#8B123C';
+                    restoreBtn.style.boxShadow = '0 4px 16px rgba(139, 18, 60, 0.2)';
+                    restoreBtn.style.transform = 'none';
+                });
+
+                restoreBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    triggerSidebarOpen();
+                });
+
+                doc.body.appendChild(restoreBtn);
+            }
+
+            function updateVisibility() {
+                try {
+                    const doc = window.parent.document;
+                    const sidebar = doc.querySelector('section[data-testid="stSidebar"]') || doc.querySelector('[data-testid="stSidebar"]');
+                    const isCollapsed = !sidebar || 
+                                        sidebar.getAttribute('aria-expanded') === 'false' || 
+                                        sidebar.getAttribute('data-collapsed') === 'true' ||
+                                        sidebar.offsetWidth < 50;
+
+                    if (restoreBtn) {
+                        if (isCollapsed) {
+                            restoreBtn.style.display = 'inline-flex';
+                        } else {
+                            restoreBtn.style.display = 'none';
+                        }
+                    }
+                } catch(e) {}
+            }
+
+            updateVisibility();
+            if (!window._smuSidebarWatcherActive) {
+                window._smuSidebarWatcherActive = true;
+                setInterval(updateVisibility, 150);
+            }
+        } catch(e) {}
+    }
+
+    initFloatingRestoreButton();
+    setTimeout(initFloatingRestoreButton, 100);
+    setTimeout(initFloatingRestoreButton, 500);
+})();
+</script>
+"""
+components.html(sidebar_restore_button_js, height=0, width=0)
 
 # ----------------------------------------------------------------------------
 # Sidebar Control & Analytics Center
@@ -965,6 +1286,19 @@ with st.sidebar:
     )
     use_reranker = st.toggle("Cross-Encoder Reranking", value=True)
     pipeline.use_reranker = use_reranker
+
+    st.markdown("<div class='sidebar-section-title'>SYNTHESIS ENGINE</div>", unsafe_allow_html=True)
+    engine_choice = st.radio(
+        "Generator Engine",
+        options=["local_synthesizer", "gemini"],
+        format_func=lambda x: {
+            "local_synthesizer": "High-Speed Grounded (Instant ~0.3s)",
+            "gemini": "Google Gemini API (Cloud LLM)",
+        }[x],
+        index=0,
+        label_visibility="collapsed",
+    )
+    pipeline.generator.active_backend = engine_choice
 
     st.markdown("<div class='sidebar-section-title'>KNOWLEDGE SCOPE</div>", unsafe_allow_html=True)
     category_filter = st.selectbox(
@@ -1046,22 +1380,6 @@ with hero_col_text:
 """,
         unsafe_allow_html=True,
     )
-
-    with st.form(key="hero_search_form", clear_on_submit=False):
-        c_search, c_btn = st.columns([0.80, 0.20])
-        with c_search:
-            hero_query = st.text_input(
-                "Search query",
-                placeholder="Ask any question and press Enter... (e.g., Where can I get the academic calendar?)",
-                label_visibility="collapsed",
-                key="hero_search_box",
-            )
-        with c_btn:
-            submitted = st.form_submit_button("Search ↵", use_container_width=True)
-
-        if submitted and hero_query and hero_query.strip():
-            st.session_state.pending = hero_query.strip()
-            st.rerun()
 
 @st.cache_data
 def get_cached_image(path: str):
@@ -1220,7 +1538,10 @@ elif typed and typed.strip():
 if query:
     st.session_state.messages.append({"role": "user", "content": query})
     with st.chat_message("user", avatar=USER_AVATAR):
+        st.markdown("<div id='active-user-query' style='scroll-margin-top: 85px;'></div>", unsafe_allow_html=True)
         st.markdown(query)
+
+    trigger_auto_scroll()
 
     with st.chat_message("assistant", avatar=BOT_AVATAR):
         with st.spinner("Synthesizing verified SMU documentation..."):
@@ -1233,7 +1554,7 @@ if query:
             "meta": meta_html(result),
             "sources": result.get("sources", []),
         }
-        st.markdown("<div id='latest-response-anchor'></div>", unsafe_allow_html=True)
+        st.markdown("<div id='latest-response-anchor' style='scroll-margin-top: 85px;'></div>", unsafe_allow_html=True)
         render_message(reply, expand_sources=True)
 
     st.session_state.messages.append(reply)

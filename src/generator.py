@@ -22,17 +22,18 @@ UNANSWERABLE_FALLBACK = (
 
 
 class GroundedGenerator:
-    def __init__(self, provider: str = "auto", min_confidence: float = 0.35):
-        self.provider = provider
+    def __init__(self, provider: str = None, min_confidence: float = 0.35):
+        self.provider = provider or os.getenv("RAG_GENERATOR_BACKEND", "local")
         self.min_confidence = min_confidence
+        self.gemini_key = os.getenv("GEMINI_API_KEY")
+        self.openai_key = os.getenv("OPENAI_API_KEY")
+        self.gemini_client = None
+        self.openai_client = None
         self._init_backend()
 
     def _init_backend(self):
         """Detect and initialize available LLM backends."""
-        self.gemini_key = os.getenv("GEMINI_API_KEY")
-        self.openai_key = os.getenv("OPENAI_API_KEY")
-
-        if self.provider == "gemini" or (self.provider == "auto" and self.gemini_key):
+        if self.provider == "gemini" and self.gemini_key:
             try:
                 from google import genai
                 self.gemini_client = genai.Client(api_key=self.gemini_key)
@@ -42,7 +43,7 @@ class GroundedGenerator:
             except Exception as e:
                 logger.warning(f"Could not initialize Gemini: {e}")
 
-        if self.provider == "openai" or (self.provider == "auto" and self.openai_key):
+        if self.provider == "openai" and self.openai_key:
             try:
                 from openai import OpenAI
                 self.openai_client = OpenAI(api_key=self.openai_key)
@@ -52,9 +53,10 @@ class GroundedGenerator:
             except Exception as e:
                 logger.warning(f"Could not initialize OpenAI: {e}")
 
-        # Local Grounded Synthesizer
+        # High-Speed Local Grounded Synthesizer (Instantaneous <0.1s, zero-cost, verifiable citations)
         self.active_backend = "local_synthesizer"
         logger.info("Using built-in Local Grounded Synthesizer (offline, zero-cost, citation-guaranteed).")
+
 
     def _format_context(self, retrieved_docs: List[Dict[str, Any]]) -> str:
         blocks = []
@@ -130,21 +132,40 @@ class GroundedGenerator:
 
         # 3. Model Generation
         if self.active_backend == "gemini":
-            success = False
-            for model_name in ["gemini-3.5-flash-lite", "gemini-flash-lite-latest", "gemini-3.8-flash"]:
+            if self.gemini_client is None and self.gemini_key:
                 try:
-                    response = self.gemini_client.models.generate_content(
-                        model=model_name,
-                        contents=full_prompt
-                    )
-                    answer_text = response.text
-                    success = True
-                    break
+                    from google import genai
+                    self.gemini_client = genai.Client(api_key=self.gemini_key)
                 except Exception as e:
-                    logger.warning(f"Gemini model {model_name} unavailable: {e}. Trying next available model...")
-            if not success:
-                logger.error("All Gemini models exhausted. Falling back to local synthesizer.")
-                self.active_backend = "local_synthesizer"
+                    logger.warning(f"Failed to initialize Gemini client: {e}")
+
+            import concurrent.futures
+
+            def _fetch_gemini():
+                for model_name in ["gemini-3.5-flash-lite", "gemini-flash-lite-latest", "gemini-3.8-flash"]:
+                    try:
+                        resp = self.gemini_client.models.generate_content(
+                            model=model_name,
+                            contents=full_prompt
+                        )
+                        if resp and resp.text:
+                            return resp.text
+                    except Exception as e:
+                        logger.warning(f"Gemini model {model_name} error: {e}")
+                return None
+
+            answer_text = None
+            try:
+                with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                    future = executor.submit(_fetch_gemini)
+                    answer_text = future.result(timeout=4.5)
+            except concurrent.futures.TimeoutError:
+                logger.warning("Gemini API call timed out after 4.5s. Fast fallback to local synthesizer.")
+            except Exception as e:
+                logger.warning(f"Gemini execution exception: {e}")
+
+            if not answer_text:
+                logger.info("Falling back to ultra-fast Local Grounded Synthesizer.")
                 answer_text = self._local_synthesize(query, retrieved_docs)
 
         elif self.active_backend == "openai":

@@ -1,0 +1,182 @@
+[
+  {
+    "id": "A1",
+    "query": "What information does the SMU Academic Calendar provide?",
+    "expected_behavior": "answer",
+    "expected_answer": "The academic calendar provides information about courses, programs, admission requirements, schedules, costs, regulations, and student support services. It also contains course descriptions and prerequisites.",
+    "category": "Academics & Registration",
+    "target_faq_id": "SMU-FAQ-001",
+    "evaluation_notes": "Ground truth verified in SMU-FAQ-001. Tests whether retrieval captures core academic calendar functions including prerequisites, course descriptions, and programs."
+  },
+  {
+    "id": "A2",
+    "query": "How can I arrange a campus tour at Saint Mary's University?",
+    "expected_behavior": "answer",
+    "expected_answer": "Contact the Centre for New Students by calling 420-5682, emailing campustours@smu.ca, or submitting the online Campus Tour Request Form. Booking at least one week in advance is recommended.",
+    "category": "Campus & Transportation",
+    "target_faq_id": "SMU-FAQ-004",
+    "evaluation_notes": "Ground truth verified in SMU-FAQ-004. Tests retrieval of tour booking channels (phone 420-5682, email campustours@smu.ca, online form) and booking advance window."
+  },
+  {
+    "id": "A3",
+    "query": "What is Self-Service Banner used for?",
+    "expected_behavior": "answer",
+    "expected_answer": "Self-Service Banner allows students to register for courses, pay tuition, view grades and exam schedules, print T2202A forms, and access other university services. Faculty and staff can use it for relevant employment and academic tasks.",
+    "category": "IT & Technical Support",
+    "target_faq_id": "SMU-FAQ-005",
+    "evaluation_notes": "Ground truth verified in SMU-FAQ-005. Tests identification of Banner capabilities for both students (courses, grades, tuition) and staff/faculty."
+  },
+  {
+    "id": "A4",
+    "query": "Where can I get help with computer problems at SMU?",
+    "expected_behavior": "answer",
+    "expected_answer": "The ITSS Help Desk provides assistance with software and university computer problems. It has locations in the Atrium and Loyola Academic 268. The supplied FAQ lists phone number 496-8111 and email helpdesk@smu.ca.",
+    "category": "IT & Technical Support",
+    "target_faq_id": "SMU-FAQ-006",
+    "evaluation_notes": "Ground truth verified in SMU-FAQ-006. Tests retrieval of ITSS Help Desk locations (Atrium, LA 268) and contact channels (496-8111, helpdesk@smu.ca)."
+  },
+  {
+    "id": "A5",
+    "query": "When does course registration usually begin?",
+    "expected_behavior": "answer",
+    "expected_answer": "Registration for each academic year (September - April) typically begins in April. Registration for spring and summer sessions typically begins in March. Students should check Registration Dates to find out when they are eligible to register.",
+    "category": "Academics & Registration",
+    "target_faq_id": "SMU-FAQ-230",
+    "evaluation_notes": "Ground truth verified in SMU-FAQ-230 ('When can I register?'). Verified that dataset explicitly establishes April (academic year) and March (spring/summer) dates."
+  },
+  {
+    "id": "A6",
+    "query": "What does a course prerequisite mean?",
+    "expected_behavior": "answer",
+    "expected_answer": "A prerequisite is a course or requirement that must be satisfied before enrolling in another course. In SMU regulations, courses numbered 2000 and above usually have prerequisites outlined in the Academic Calendar.",
+    "category": "Academics & Registration",
+    "target_faq_id": "SMU-FAQ-076",
+    "evaluation_notes": "Ground truth verified in SMU-FAQ-076 and SMU-FAQ-001. Evaluates whether the system retrieves prerequisite requirements for courses numbered 2000+ and relates them to calendar prerequisites."
+  },
+  {
+    "id": "A7",
+    "query": "Can I access the Student Health Clinic if I already have a family doctor?",
+    "expected_behavior": "answer",
+    "expected_answer": "Yes. Even if you already have a family doctor (physician), you are welcome to access the Student Health Clinic.",
+    "category": "Athletics & Student Life",
+    "target_faq_id": "SMU-FAQ-197",
+    "evaluation_notes": "Ground truth verified in SMU-FAQ-197 ('Can I access he Student Health Clinic if I have a family physician?'). Confirms that students with outside physicians are eligible."
+  },
+  {
+    "id": "A8",
+    "query": "Does the Student Health Clinic provide dental services?",
+    "expected_behavior": "answer",
+    "expected_answer": "No, the Student Health Clinic does not provide dental services.",
+    "category": "Athletics & Student Life",
+    "target_faq_id": "SMU-FAQ-204",
+    "evaluation_notes": "Ground truth verified in SMU-FAQ-204 ('Does the Student Health Clinic provide dental services?'). Tests explicit negative factual assertion."
+  },
+  {
+    "id": "A9",
+    "query": "Is counselling free for registered SMU students?",
+    "expected_behavior": "answer",
+    "expected_answer": "Yes, counselling services at The Counselling Centre are free for any currently registered student at Saint Mary's University.",
+    "category": "Athletics & Student Life",
+    "target_faq_id": "SMU-FAQ-212",
+    "evaluation_notes": "Ground truth verified in SMU-FAQ-212 ('Is there a cost to attend counselling at The Counselling Centre?'). Verifies free service for registered students."
+  },
+  {
+    "id": "A10",
+    "query": "Can students have overnight guests in residence?",
+    "expected_behavior": "answer",
+    "expected_answer": "Normally yes, overnight guests are permitted for up to two consecutive nights, provided all roommates/suitemates consent and agree. Residents remain responsible for their guests' actions. Longer stays require permission from Housing & Residence.",
+    "category": "Housing & Dining",
+    "target_faq_id": "SMU-FAQ-195",
+    "evaluation_notes": "Ground truth verified in SMU-FAQ-195 ('Can I have overnight guests in residence?'). Tests conditionality (consent of roommates, two consecutive night limit, student responsibility)."
+  },
+  {
+    "id": "B1",
+    "query": "What is the exact tuition fee for an international undergraduate Computer Science student for Fall 2026?",
+    "expected_behavior": "abstain",
+    "expected_answer": "The available FAQ data does not establish the exact tuition fee for this student category and term. Consult the official tuition and fee schedule.",
+    "category": "Tuition & Finance",
+    "target_faq_id": null,
+    "evaluation_notes": "Verified absent from KB. Future tuition rates for Fall 2026 are not published in static FAQ. System must abstain and refer to official fee schedule."
+  },
+  {
+    "id": "B2",
+    "query": "How many seats are still available in the Bachelor of Commerce program today?",
+    "expected_behavior": "abstain",
+    "expected_answer": "The available FAQ data does not provide current program seat availability. Contact the admissions office for current information.",
+    "category": "Academics & Registration",
+    "target_faq_id": null,
+    "evaluation_notes": "Verified absent from KB. Real-time dynamic enrollment/seat availability is not tracked in static FAQ. System must abstain."
+  },
+  {
+    "id": "B3",
+    "query": "What exact GPA will guarantee admission to the MBA program for the 2027 intake?",
+    "expected_behavior": "abstain",
+    "expected_answer": "The available FAQ data does not establish a guaranteed admission GPA for the 2027 intake. Consult the official MBA admission requirements.",
+    "category": "Academics & Registration",
+    "target_faq_id": null,
+    "evaluation_notes": "Verified absent from KB. No guaranteed GPA for future 2027 intakes exists in FAQ. System must abstain."
+  },
+  {
+    "id": "B4",
+    "query": "Which residence room number will be assigned to me next semester?",
+    "expected_behavior": "abstain",
+    "expected_answer": "The available FAQ data cannot determine an individual's room assignment. Contact Residence and Housing.",
+    "category": "Housing & Dining",
+    "target_faq_id": null,
+    "evaluation_notes": "Verified absent from KB. Individual confidential room assignments are protected student records outside FAQ scope. System must abstain."
+  },
+  {
+    "id": "B5",
+    "query": "What is the current Wi-Fi password for the university library?",
+    "expected_behavior": "abstain",
+    "expected_answer": "The available FAQ data does not provide the current library Wi-Fi password. Contact university IT support.",
+    "category": "IT & Technical Support",
+    "target_faq_id": null,
+    "evaluation_notes": "Verified absent from KB. Campus Wi-Fi operates via individual S# credentials or guest portals; no shared library Wi-Fi password exists in FAQ. System must abstain."
+  },
+  {
+    "id": "B6",
+    "query": "What grade did a particular student receive in the Database Systems course?",
+    "expected_behavior": "abstain",
+    "expected_answer": "The FAQ dataset does not contain individual student grades. Access authorized student records through the university's official system.",
+    "category": "Academics & Registration",
+    "target_faq_id": null,
+    "evaluation_notes": "Verified absent from KB. Private student grades are protected FERPA/privacy records not in FAQ. System must abstain."
+  },
+  {
+    "id": "B7",
+    "query": "Which professor will teach each section of Computer Science in the next semester?",
+    "expected_behavior": "abstain",
+    "expected_answer": "The available FAQ data does not establish future instructor assignments. Consult the official timetable or academic department.",
+    "category": "Academics & Registration",
+    "target_faq_id": null,
+    "evaluation_notes": "Verified absent from KB. Future semester faculty timetables are outside the static FAQ. System must abstain."
+  },
+  {
+    "id": "B8",
+    "query": "What is the exact Metro Transit bus arrival time at the university's nearest stop tomorrow at 8:15 AM?",
+    "expected_behavior": "abstain",
+    "expected_answer": "The FAQ dataset does not provide live or date-specific bus arrival times. Check the current Metro Transit schedule.",
+    "category": "Campus & Transportation",
+    "target_faq_id": null,
+    "evaluation_notes": "Verified absent from KB. Real-time dynamic municipal bus schedules are not in FAQ. System must abstain."
+  },
+  {
+    "id": "B9",
+    "query": "Has my residence payment been received and posted to my student account?",
+    "expected_behavior": "abstain",
+    "expected_answer": "The FAQ dataset cannot determine an individual's payment status. Check the authorized student account or contact the university's finance office.",
+    "category": "Tuition & Finance",
+    "target_faq_id": null,
+    "evaluation_notes": "Verified absent from KB. Individual student ledger transactions are private financial records. System must abstain."
+  },
+  {
+    "id": "B10",
+    "query": "What will the university's exact residence fees be for the 2027–2028 academic year?",
+    "expected_behavior": "abstain",
+    "expected_answer": "The available FAQ data does not establish exact residence fees for the 2027–2028 academic year. Consult the official fee schedule when available.",
+    "category": "Housing & Dining",
+    "target_faq_id": null,
+    "evaluation_notes": "Verified absent from KB. Long-range future residence rates for 2027-2028 do not exist in current documentation. System must abstain."
+  }
+]

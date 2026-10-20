@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 🎓 Saint Mary's University (SMU) Knowledge Assistant
 > **Production-Grade Retrieval-Augmented Generation (RAG) System** with Verifiable Citations, Hybrid Search, Cross-Encoder Reranking, Semantic Query Expansion, Caching, Adversarial Injection Defense, and 235-Point Verified Test Suite.
 
@@ -199,9 +198,8 @@ python -m tests.run_all_edge_cases
 ### 5. Instant Enter-Key Query Submission
 
 In both `app.py` and `app/ui.py`:
-- The prominent search bar uses a streamlined `st.form(key="hero_search_form", clear_on_submit=False)` and `st.text_input`.
-- **Pressing the Enter key** immediately submits the form, routes the query to the RAG pipeline, and renders the grounded answer, confidence bar, and expandable source citations without requiring manual button clicks.
-- The bottom chat bar (`st.chat_input`) also natively submits on Enter.
+- The streamlined bottom chat bar (`st.chat_input`) natively submits on Enter, routes queries to the RAG pipeline, and renders grounded answers, calibrated confidence gauges, and expandable source citations.
+- Common question shortcut cards allow instant single-click inquiry exploration across campus dining, transit, athletics, and enrollment.
 
 ---
 
@@ -227,6 +225,4 @@ OPENAI_API_KEY=your_openai_api_key_here
 ```
 
 *(API keys are never logged, displayed in the UI, or committed to source control.)*
-=======
-# MFC_vit_AI-ML_rag_model
->>>>>>> origin/main
+

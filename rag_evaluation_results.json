@@ -1,0 +1,596 @@
+{
+  "timestamp": "2026-10-20 22:04:30",
+  "total_tests": 20,
+  "valid_tests": 20,
+  "invalid_tests": 0,
+  "metrics": {
+    "answerable_accuracy": {
+      "numerator": 10,
+      "denominator": 10,
+      "percentage": 100.0,
+      "interpretation": "Proportion of answerable questions answered accurately using verified FAQ documentation."
+    },
+    "answerable_coverage": {
+      "numerator": 10,
+      "denominator": 10,
+      "percentage": 100.0,
+      "interpretation": "Proportion of answerable questions for which the system provided a substantive response."
+    },
+    "abstention_accuracy": {
+      "numerator": 2,
+      "denominator": 10,
+      "percentage": 20.0,
+      "interpretation": "Proportion of unanswerable questions where the system correctly recognized missing data and abstained."
+    },
+    "hallucination_rate": {
+      "numerator": 8,
+      "denominator": 10,
+      "percentage": 80.0,
+      "interpretation": "Proportion of unanswerable questions that received an unsupported substantive response."
+    },
+    "overall_benchmark_accuracy": {
+      "numerator": 12,
+      "denominator": 20,
+      "percentage": 60.0,
+      "interpretation": "Overall proportion of benchmark tests that achieved passing status."
+    },
+    "retrieval_hit_rate": {
+      "numerator": 10,
+      "denominator": 10,
+      "percentage": 100.0,
+      "interpretation": "Proportion of answerable queries where the ground-truth document was retrieved in the top-k results."
+    },
+    "groundedness_rate": {
+      "numerator": 10,
+      "denominator": 10,
+      "percentage": 100.0,
+      "interpretation": "Proportion of substantive answers whose claims are fully grounded in retrieved context."
+    }
+  },
+  "test_results": [
+    {
+      "id": "A1",
+      "query": "What information does the SMU Academic Calendar provide?",
+      "category": "Academics & Registration",
+      "expected_behavior": "answer",
+      "expected_answer": "The academic calendar provides information about courses, programs, admission requirements, schedules, costs, regulations, and student support services. It also contains course descriptions and prerequisites.",
+      "target_faq_id": "SMU-FAQ-001",
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-001 - Academics & Registration]** regarding \"What is the SMU Academic Calendar? Why do I need it? How do I get one?\":\n\nThe academic calendar that arrives with acceptance letters is the rulebook for the University. In addition to listing the courses offered at Saint Mary's, the academic calendar contains valuable information on such things as programs, admission requirements, schedules, costs, regulations and student support services. When selecting courses, the first step is to take a look at the course descriptions and prerequisites outlined in the academic calendar. To see when these courses are offered, check the timetable on the Self Service Banner. Undergraduate calendars are available by request from either Admissions or the Service Centre; Graduate calendar are available from the Faculty of Graduate Studies and Research in Room AT 210. For a digital version of the current academic calendar check: Academic Calendar.\n\n\n**Related Information [SMU-FAQ-127]:** All term statements are available through the Student Account Center. Notifications will be sent to your SMU email address when future terms' statements are available. Tuition due dates will be listed at the bottom of your statement and can be found in the Academic Calendar of Events.\n\n**Related Information [SMU-FAQ-181]:** RESIDENCE APPLICATIONS for the 2024-25 Academic Year will open February 1, 2024.* Students attending Saint Mary's who are interested in living in residence can apply online through our Housing Portal. Please Note: New SMU students must first pay the admission deposit in order to activate their SMU credentials (S# and SMU email). These credentials will then allow them to access the Housing portal. Bed spaces in residence are assigned based on a nu...\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-001](https://smu.ca))*",
+      "model_behavior": "answered",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-001",
+        "SMU-FAQ-127",
+        "SMU-FAQ-181"
+      ],
+      "retrieval_hit": true,
+      "scores": [
+        8.0753,
+        1.679,
+        -0.2833
+      ],
+      "is_grounded": true,
+      "confidence": 1.0,
+      "latency_ms": 758.32,
+      "result": "PASS",
+      "failure_category": null,
+      "explanation": "Correctly answered using retrieved evidence from SMU-FAQ-001 with accurate factual alignment.",
+      "evaluation_notes": "Ground truth verified in SMU-FAQ-001. Tests whether retrieval captures core academic calendar functions including prerequisites, course descriptions, and programs."
+    },
+    {
+      "id": "A2",
+      "query": "How can I arrange a campus tour at Saint Mary's University?",
+      "category": "Campus & Transportation",
+      "expected_behavior": "answer",
+      "expected_answer": "Contact the Centre for New Students by calling 420-5682, emailing campustours@smu.ca, or submitting the online Campus Tour Request Form. Booking at least one week in advance is recommended.",
+      "target_faq_id": "SMU-FAQ-004",
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-004 - Housing & Dining]** regarding \"How do I arrange a tour of the campus? How far in advance do I need to book?\":\n\nThe Centre for New Students in the McNally Lobby has student ambassadors who conduct one-hour campus tours that include the library, classrooms, bookstore, athletic facilities, dining areas and residences. To arrange a tour, leave a message at 420-5682, e-mail campustours@smu.ca or complete the Campus Tour Request Form at http://www.smu.ca/future-students/visit-our-campus.html. Book at least one week in advance to avoid disappointment.\n\n\n**Related Information [SMU-FAQ-054]:** Counselling Centre RAs Writing Centre Career Services There are a wide variety of resources available on campus for any students wishing to access them. Saint Mary's has free counselling services in the student union building, as well as career services for any future planning needs. RAs are available to their floor members when needed for support and to provide additional resources when needed.\n\n**Related Information [SMU-FAQ-018]:** Rental facilities are available on campus to faculty, students, staff and the general public through Conference Services. To make a booking or request information, phone 420-5055, e-mail conference.services@smu.ca or check the website: Conference Services . Bookings for Athletic facilities and the Courtside and VIP lounges are made through Athletics and Recreation. Call 420-5440 or email linda.gould@smu.ca . Bookings for Computer labs in McNally ...\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-004](https://smu.ca))*",
+      "model_behavior": "answered",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-004",
+        "SMU-FAQ-054",
+        "SMU-FAQ-018"
+      ],
+      "retrieval_hit": true,
+      "scores": [
+        6.4705,
+        1.304,
+        0.7072
+      ],
+      "is_grounded": true,
+      "confidence": 1.0,
+      "latency_ms": 1425.91,
+      "result": "PASS",
+      "failure_category": null,
+      "explanation": "Correctly answered using retrieved evidence from SMU-FAQ-004 with accurate factual alignment.",
+      "evaluation_notes": "Ground truth verified in SMU-FAQ-004. Tests retrieval of tour booking channels (phone 420-5682, email campustours@smu.ca, online form) and booking advance window."
+    },
+    {
+      "id": "A3",
+      "query": "What is Self-Service Banner used for?",
+      "category": "IT & Technical Support",
+      "expected_behavior": "answer",
+      "expected_answer": "Self-Service Banner allows students to register for courses, pay tuition, view grades and exam schedules, print T2202A forms, and access other university services. Faculty and staff can use it for relevant employment and academic tasks.",
+      "target_faq_id": "SMU-FAQ-005",
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-240 - IT & Technical Support]** regarding \"How to activate you Self-Service Banner?\":\n\nSelf-Service Banner is a site that allows students to look up and register for courses, access course and exam schedules, and view their academic transcript. To use Self-Service Banner (SSB), you must first activate your SMU account to receive your SSB login credentials (@smu.ca email address and password). Your initial temporary PIN is your date of birth in the format of DD/MM/YY (YY is the last two digits of the year).\n\n\n**Related Information [SMU-FAQ-228]:** Self-Service Banner is a student information system that allows you to: Register for courses Pay fees View your class schedule View your final grades Order official transcripts Print Canadian tax forms Change your personal information Access online resources\n\n**Related Information [SMU-FAQ-005]:** Once admitted, students receive a Banner ID number (known as an 'A' number) and PIN, while faculty and staff receive this information from Human Resources. 'A' number and PIN are used to access Banner Self-Service, where students can register for courses; print their T2202A for income tax purposes; pay for tuition; view exam schedules and grades, etc,. Faculty and Staff can access a variety of employment-related materials including pay stubs, lea...\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-240](https://smu.ca))*",
+      "model_behavior": "answered",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-240",
+        "SMU-FAQ-228",
+        "SMU-FAQ-005"
+      ],
+      "retrieval_hit": true,
+      "scores": [
+        8.6327,
+        8.3632,
+        6.4961
+      ],
+      "is_grounded": true,
+      "confidence": 1.0,
+      "latency_ms": 1320.11,
+      "result": "PASS",
+      "failure_category": null,
+      "explanation": "Correctly answered using retrieved evidence from SMU-FAQ-005 with accurate factual alignment.",
+      "evaluation_notes": "Ground truth verified in SMU-FAQ-005. Tests identification of Banner capabilities for both students (courses, grades, tuition) and staff/faculty."
+    },
+    {
+      "id": "A4",
+      "query": "Where can I get help with computer problems at SMU?",
+      "category": "IT & Technical Support",
+      "expected_behavior": "answer",
+      "expected_answer": "The ITSS Help Desk provides assistance with software and university computer problems. It has locations in the Atrium and Loyola Academic 268. The supplied FAQ lists phone number 496-8111 and email helpdesk@smu.ca.",
+      "target_faq_id": "SMU-FAQ-006",
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-006 - IT & Technical Support]** regarding \"Where do I go if I have computer problems? Where do I go for repairs to university computers? Where do I go for repairs to my personal computer? Where do I get more information?\":\n\nThe ITSS Help Desk provides help for problems related to software and computer use. ITSS Help Desk is in two locations, one in the Atrium and one in Loyola Academic 268. For University computers that need repair, the ITSS Help Desk provides referrals to ITSS Support Technologists. Repairs to personal computers are not provided on campus, but computer repair and servicing is available within walking distance of the university. For more information call the Help Desk at 496-8111, email helpdesk@smu.ca or go to: http://www.smu.ca/eit/.\n\n\n**Related Information [SMU-FAQ-134]:** For assistance with your Student Account Centre, please contact the service centre, by email to servicecentre.touchnet@smu.ca or visit the Service Centre in person at McNally Main (MM), room 108.\n\n**Related Information [SMU-FAQ-019]:** Scanners are located in the Software and Application Support Centre (SAS) lab on the first floor of the Atrium (Room 107) next to the Just Us Caf. They are available at no charge to students, faculty, support staff, and by special permission to alumni and guests. Users should bring their own jump drives and CD/DVD's if needed. For more information call 496- 8168, email sas@smu.ca. Scanning is also available for a fee at the SMUSA Marketing Depart...\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-006](https://smu.ca))*",
+      "model_behavior": "answered",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-006",
+        "SMU-FAQ-134",
+        "SMU-FAQ-019"
+      ],
+      "retrieval_hit": true,
+      "scores": [
+        8.1371,
+        -2.5069,
+        -4.1803
+      ],
+      "is_grounded": true,
+      "confidence": 1.0,
+      "latency_ms": 1408.45,
+      "result": "PASS",
+      "failure_category": null,
+      "explanation": "Correctly answered using retrieved evidence from SMU-FAQ-006 with accurate factual alignment.",
+      "evaluation_notes": "Ground truth verified in SMU-FAQ-006. Tests retrieval of ITSS Help Desk locations (Atrium, LA 268) and contact channels (496-8111, helpdesk@smu.ca)."
+    },
+    {
+      "id": "A5",
+      "query": "When does course registration usually begin?",
+      "category": "Academics & Registration",
+      "expected_behavior": "answer",
+      "expected_answer": "Registration for each academic year (September - April) typically begins in April. Registration for spring and summer sessions typically begins in March. Students should check Registration Dates to find out when they are eligible to register.",
+      "target_faq_id": "SMU-FAQ-230",
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-230 - Academics & Registration]** regarding \"When can I register?\":\n\nRegistration for each academic year (September - April) typically begins in April. Registration for spring and summer sessions typically begins in March. Check our Registration Dates to find out when you are eligible to register.\n\n\n**Related Information [SMU-FAQ-083]:** Mid-May:All accepted new students set to begin their studies in September or January can register in courses for September and the following January semesters.It is possible to change your mind or to register in courses right up to the first week of classes, but by that time your choices will be limited to courses where space is still available.\n\n**Related Information [SMU-FAQ-076]:** You may be permitted to register before your advanced standing is assessed, but prerequisites must be satisfied. Courses beyond the first year (those numbered 2000 and above) usually have prerequisites. For this reason, we advise you to submit your final transcript as early as possible so that your registration is not compromised.\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-230](https://smu.ca))*",
+      "model_behavior": "answered",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-230",
+        "SMU-FAQ-083",
+        "SMU-FAQ-076"
+      ],
+      "retrieval_hit": true,
+      "scores": [
+        7.9277,
+        7.207,
+        4.3131
+      ],
+      "is_grounded": true,
+      "confidence": 1.0,
+      "latency_ms": 1962.98,
+      "result": "PASS",
+      "failure_category": null,
+      "explanation": "Correctly answered using retrieved evidence from SMU-FAQ-230 with accurate factual alignment.",
+      "evaluation_notes": "Ground truth verified in SMU-FAQ-230 ('When can I register?'). Verified that dataset explicitly establishes April (academic year) and March (spring/summer) dates."
+    },
+    {
+      "id": "A6",
+      "query": "What does a course prerequisite mean?",
+      "category": "Academics & Registration",
+      "expected_behavior": "answer",
+      "expected_answer": "A prerequisite is a course or requirement that must be satisfied before enrolling in another course. In SMU regulations, courses numbered 2000 and above usually have prerequisites outlined in the Academic Calendar.",
+      "target_faq_id": "SMU-FAQ-076",
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-232 - Academics & Registration]** regarding \"What is a pre-requisite?\":\n\nA pre-requisite is a course you must successfully complete (in a previous year or term) in preparation for a more advanced class. If you do not have the necessary pre-requisites, you cannot register for the course in question.\n\n\n**Related Information [SMU-FAQ-076]:** You may be permitted to register before your advanced standing is assessed, but prerequisites must be satisfied. Courses beyond the first year (those numbered 2000 and above) usually have prerequisites. For this reason, we advise you to submit your final transcript as early as possible so that your registration is not compromised.\n\n**Related Information [SMU-FAQ-236]:** The official descriptions are as follows: On Campus: The course is held in person (on campus). Hybrid: The course is a blend of both in-person (on campus) and online components. Students will be required to participate both in person and online to complete the course successfully. Dual Mode: The Course can be completed fully in person or fully online. *Note: It can also be displayed as \"synchronous online/on-campus.\" Synchronous: The Course is co...\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-232](https://smu.ca))*",
+      "model_behavior": "answered",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-232",
+        "SMU-FAQ-076",
+        "SMU-FAQ-236"
+      ],
+      "retrieval_hit": true,
+      "scores": [
+        8.2129,
+        2.1759,
+        -4.5226
+      ],
+      "is_grounded": true,
+      "confidence": 1.0,
+      "latency_ms": 1954.91,
+      "result": "PASS",
+      "failure_category": null,
+      "explanation": "Correctly answered using retrieved evidence from SMU-FAQ-076 with accurate factual alignment.",
+      "evaluation_notes": "Ground truth verified in SMU-FAQ-076 and SMU-FAQ-001. Evaluates whether the system retrieves prerequisite requirements for courses numbered 2000+ and relates them to calendar prerequisites."
+    },
+    {
+      "id": "A7",
+      "query": "Can I access the Student Health Clinic if I already have a family doctor?",
+      "category": "Athletics & Student Life",
+      "expected_behavior": "answer",
+      "expected_answer": "Yes. Even if you already have a family doctor (physician), you are welcome to access the Student Health Clinic.",
+      "target_faq_id": "SMU-FAQ-197",
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-197 - Health & Wellness]** regarding \"Can I access he Student Health Clinic if I have a family physician?\":\n\nYes. Even if you already have a family physician, you are welcome to access the Student Health Clinic.\n\n\n**Related Information [SMU-FAQ-198]:** Children and spouses of students can access the Student Health Clinic while the student is enrolled at Saint Mary's and for up to one year after graduation\n\n**Related Information [SMU-FAQ-202]:** Yes. Our physicians can provide the immunizations and boosters that are recommended in Nova Scotia. Vaccines available through the Student Health Clinic include, but are not limited to: Influenza Meningococcal B Td (Tetanus and diphtheria) MMR (measles, mumps and rubella) And more! Please note the Covid19 vaccines and boosters are not available through the Student Health Clinic. If you have questions about specific vaccines, please contact us at ...\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-197](https://smu.ca))*",
+      "model_behavior": "answered",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-197",
+        "SMU-FAQ-198",
+        "SMU-FAQ-202"
+      ],
+      "retrieval_hit": true,
+      "scores": [
+        10.3857,
+        6.0897,
+        -2.41
+      ],
+      "is_grounded": true,
+      "confidence": 1.0,
+      "latency_ms": 925.28,
+      "result": "PASS",
+      "failure_category": null,
+      "explanation": "Correctly answered using retrieved evidence from SMU-FAQ-197 with accurate factual alignment.",
+      "evaluation_notes": "Ground truth verified in SMU-FAQ-197 ('Can I access he Student Health Clinic if I have a family physician?'). Confirms that students with outside physicians are eligible."
+    },
+    {
+      "id": "A8",
+      "query": "Does the Student Health Clinic provide dental services?",
+      "category": "Athletics & Student Life",
+      "expected_behavior": "answer",
+      "expected_answer": "No, the Student Health Clinic does not provide dental services.",
+      "target_faq_id": "SMU-FAQ-204",
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-204 - Health & Wellness]** regarding \"Does the Student Health Clinic provide dental services?\":\n\nThe Student Health Clinic does not provide dental services.\n\n\n**Related Information [SMU-FAQ-202]:** Yes. Our physicians can provide the immunizations and boosters that are recommended in Nova Scotia. Vaccines available through the Student Health Clinic include, but are not limited to: Influenza Meningococcal B Td (Tetanus and diphtheria) MMR (measles, mumps and rubella) And more! Please note the Covid19 vaccines and boosters are not available through the Student Health Clinic. If you have questions about specific vaccines, please contact us at ...\n\n**Related Information [SMU-FAQ-198]:** Children and spouses of students can access the Student Health Clinic while the student is enrolled at Saint Mary's and for up to one year after graduation\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-204](https://smu.ca))*",
+      "model_behavior": "answered",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-204",
+        "SMU-FAQ-202",
+        "SMU-FAQ-198"
+      ],
+      "retrieval_hit": true,
+      "scores": [
+        10.8788,
+        -0.5973,
+        -0.6173
+      ],
+      "is_grounded": true,
+      "confidence": 1.0,
+      "latency_ms": 1059.24,
+      "result": "PASS",
+      "failure_category": null,
+      "explanation": "Correctly answered using retrieved evidence from SMU-FAQ-204 with accurate factual alignment.",
+      "evaluation_notes": "Ground truth verified in SMU-FAQ-204 ('Does the Student Health Clinic provide dental services?'). Tests explicit negative factual assertion."
+    },
+    {
+      "id": "A9",
+      "query": "Is counselling free for registered SMU students?",
+      "category": "Athletics & Student Life",
+      "expected_behavior": "answer",
+      "expected_answer": "Yes, counselling services at The Counselling Centre are free for any currently registered student at Saint Mary's University.",
+      "target_faq_id": "SMU-FAQ-212",
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-212 - Health & Wellness]** regarding \"Is there a cost to attend counselling at The Counselling Centre?\":\n\nCounselling services at the Centre are free for any currently registered student at Saint Mary's.\n\n\n**Related Information [SMU-FAQ-208]:** Any SMU student who is registered and attending class during the current academic semester. This includes students on co-op or who are completing their thesis. During the spring and summer months many students do not register and attend class. In that circumstance, if the student was registered and attended class in the winter semester and plans to again in the fall, we will continue to service them through the spring/summer months.\n\n**Related Information [SMU-FAQ-054]:** Counselling Centre RAs Writing Centre Career Services There are a wide variety of resources available on campus for any students wishing to access them. Saint Mary's has free counselling services in the student union building, as well as career services for any future planning needs. RAs are available to their floor members when needed for support and to provide additional resources when needed.\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-212](https://smu.ca))*",
+      "model_behavior": "answered",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-212",
+        "SMU-FAQ-208",
+        "SMU-FAQ-054"
+      ],
+      "retrieval_hit": true,
+      "scores": [
+        4.2719,
+        2.6912,
+        0.9374
+      ],
+      "is_grounded": true,
+      "confidence": 0.999,
+      "latency_ms": 1111.18,
+      "result": "PASS",
+      "failure_category": null,
+      "explanation": "Correctly answered using retrieved evidence from SMU-FAQ-212 with accurate factual alignment.",
+      "evaluation_notes": "Ground truth verified in SMU-FAQ-212 ('Is there a cost to attend counselling at The Counselling Centre?'). Verifies free service for registered students."
+    },
+    {
+      "id": "A10",
+      "query": "Can students have overnight guests in residence?",
+      "category": "Housing & Dining",
+      "expected_behavior": "answer",
+      "expected_answer": "Normally yes, overnight guests are permitted for up to two consecutive nights, provided all roommates/suitemates consent and agree. Residents remain responsible for their guests' actions. Longer stays require permission from Housing & Residence.",
+      "target_faq_id": "SMU-FAQ-195",
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-195 - Housing & Dining]** regarding \"Can I have overnight guests in residence?\":\n\nNormally, yes, you may have overnight guests, however, you must remember that you are responsible for your guests' actions while they are in residence. They are subject to residence rules and regulations as well. Any misconduct of your guest will be your responsibility. It is the basic right of every student to have privacy in his/her assigned room. No student should feel obligated to relinquish this right. In a shared accommodation, overnight guests and visitors are allowed only with the consent of all roommates. Further to this, an overnight guest or visitor may be asked at any time to leave the room in the interest of preserving privacy. Your guest is allowed in residence for two consecutive nights (assuming you have the consent of all roommates). Should you wish to have them stay longer, you must contact Housing & Residence to gain permission.\n\n\n**Related Information [SMU-FAQ-192]:** Residents are expected to occupy the room and bed assigned to them by the Housing & Residence. However, if students are experiencing problems with their particular room assignment they can apply for a room change. Please note there is no guarantee that room changes can be accommodated, as they are addressed based on available space. All room changes must be pre-authorized by Housing & Residence. Room change request information is available from t...\n\n**Related Information [SMU-FAQ-184]:** Possibly, though unfortunately there is no guarantee of this. If a student applies and confirms a space in residence very early, their chances of being placed in the residence and room type of their choice increase. Please note, however, that preferred room types, floors, or buildings are not guaranteed. Not all students who apply for single rooms will be placed in single rooms, as we have more applications for these bed spaces than available roo...\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-195](https://smu.ca))*",
+      "model_behavior": "answered",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-195",
+        "SMU-FAQ-192",
+        "SMU-FAQ-184"
+      ],
+      "retrieval_hit": true,
+      "scores": [
+        7.475,
+        -1.4574,
+        -1.883
+      ],
+      "is_grounded": true,
+      "confidence": 1.0,
+      "latency_ms": 537.08,
+      "result": "PASS",
+      "failure_category": null,
+      "explanation": "Correctly answered using retrieved evidence from SMU-FAQ-195 with accurate factual alignment.",
+      "evaluation_notes": "Ground truth verified in SMU-FAQ-195 ('Can I have overnight guests in residence?'). Tests conditionality (consent of roommates, two consecutive night limit, student responsibility)."
+    },
+    {
+      "id": "B1",
+      "query": "What is the exact tuition fee for an international undergraduate Computer Science student for Fall 2026?",
+      "category": "Tuition & Finance",
+      "expected_behavior": "abstain",
+      "expected_answer": "The available FAQ data does not establish the exact tuition fee for this student category and term. Consult the official tuition and fee schedule.",
+      "target_faq_id": null,
+      "actual_response": "I cannot find reliable information regarding this in the official SMU FAQ knowledge base. Please contact the SMU Student Information Desk (smu.ca) or academic advising directly.",
+      "model_behavior": "abstained",
+      "retrieved_faq_ids": [],
+      "retrieval_hit": null,
+      "scores": [],
+      "is_grounded": false,
+      "confidence": 0.018,
+      "latency_ms": 446.69,
+      "result": "PASS",
+      "failure_category": null,
+      "explanation": "Correctly recognized that requested information is missing/out-of-scope and appropriately abstained without hallucinating.",
+      "evaluation_notes": "Verified absent from KB. Future tuition rates for Fall 2026 are not published in static FAQ. System must abstain and refer to official fee schedule."
+    },
+    {
+      "id": "B2",
+      "query": "How many seats are still available in the Bachelor of Commerce program today?",
+      "category": "Academics & Registration",
+      "expected_behavior": "abstain",
+      "expected_answer": "The available FAQ data does not provide current program seat availability. Contact the admissions office for current information.",
+      "target_faq_id": null,
+      "actual_response": "I cannot find reliable information regarding this in the official SMU FAQ knowledge base. Please contact the SMU Student Information Desk (smu.ca) or academic advising directly.",
+      "model_behavior": "abstained",
+      "retrieved_faq_ids": [],
+      "retrieval_hit": null,
+      "scores": [],
+      "is_grounded": false,
+      "confidence": 0.027,
+      "latency_ms": 520.97,
+      "result": "PASS",
+      "failure_category": null,
+      "explanation": "Correctly recognized that requested information is missing/out-of-scope and appropriately abstained without hallucinating.",
+      "evaluation_notes": "Verified absent from KB. Real-time dynamic enrollment/seat availability is not tracked in static FAQ. System must abstain."
+    },
+    {
+      "id": "B3",
+      "query": "What exact GPA will guarantee admission to the MBA program for the 2027 intake?",
+      "category": "Academics & Registration",
+      "expected_behavior": "abstain",
+      "expected_answer": "The available FAQ data does not establish a guaranteed admission GPA for the 2027 intake. Consult the official MBA admission requirements.",
+      "target_faq_id": null,
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-240 - IT & Technical Support]** regarding \"How to activate you Self-Service Banner?\":\n\nSelf-Service Banner is a site that allows students to look up and register for courses, access course and exam schedules, and view their academic transcript. To use Self-Service Banner (SSB), you must first activate your SMU account to receive your SSB login credentials (@smu.ca email address and password). Your initial temporary PIN is your date of birth in the format of DD/MM/YY (YY is the last two digits of the year).\n\n\n**Related Information [SMU-FAQ-005]:** Once admitted, students receive a Banner ID number (known as an 'A' number) and PIN, while faculty and staff receive this information from Human Resources. 'A' number and PIN are used to access Banner Self-Service, where students can register for courses; print their T2202A for income tax purposes; pay for tuition; view exam schedules and grades, etc,. Faculty and Staff can access a variety of employment-related materials including pay stubs, lea...\n\n**Related Information [SMU-FAQ-118]:** The exam schedule is posted in Self Service Banner.\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-240](https://smu.ca))*",
+      "model_behavior": "hallucinated",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-240",
+        "SMU-FAQ-005",
+        "SMU-FAQ-118"
+      ],
+      "retrieval_hit": null,
+      "scores": [
+        -2.9399,
+        -3.1512,
+        -3.6997
+      ],
+      "is_grounded": true,
+      "confidence": 0.392,
+      "latency_ms": 454.28,
+      "result": "FAIL",
+      "failure_category": "HALLUCINATION",
+      "explanation": "Failed to abstain: generated an unsupported substantive answer for information not present in the FAQ knowledge base.",
+      "evaluation_notes": "Verified absent from KB. No guaranteed GPA for future 2027 intakes exists in FAQ. System must abstain."
+    },
+    {
+      "id": "B4",
+      "query": "Which residence room number will be assigned to me next semester?",
+      "category": "Housing & Dining",
+      "expected_behavior": "abstain",
+      "expected_answer": "The available FAQ data cannot determine an individual's room assignment. Contact Residence and Housing.",
+      "target_faq_id": null,
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-192 - Housing & Dining]** regarding \"How can I apply for a room change?\":\n\nResidents are expected to occupy the room and bed assigned to them by the Housing & Residence. However, if students are experiencing problems with their particular room assignment they can apply for a room change. Please note there is no guarantee that room changes can be accommodated, as they are addressed based on available space. All room changes must be pre-authorized by Housing & Residence. Room change request information is available from the Housing & Residence Office (LR114) in late September, via email, a few weeks after classes begin. Request for room changes will not be considered before this time. Room changes are prioritized at the discretion of Housing & Residence, based on the needs of all those who apply (not just on a first come first serve basis). Naturally, all room changes are also subject to the availability of alternate accommodation. Unfortunately, not all room change requests are able to be accommodated.\n\n\n**Related Information [SMU-FAQ-195]:** Normally, yes, you may have overnight guests, however, you must remember that you are responsible for your guests' actions while they are in residence. They are subject to residence rules and regulations as well. Any misconduct of your guest will be your responsibility. It is the basic right of every student to have privacy in his/her assigned room. No student should feel obligated to relinquish this right. In a shared accommodation, overnight gu...\n\n**Related Information [SMU-FAQ-181]:** RESIDENCE APPLICATIONS for the 2024-25 Academic Year will open February 1, 2024.* Students attending Saint Mary's who are interested in living in residence can apply online through our Housing Portal. Please Note: New SMU students must first pay the admission deposit in order to activate their SMU credentials (S# and SMU email). These credentials will then allow them to access the Housing portal. Bed spaces in residence are assigned based on a nu...\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-192](https://smu.ca))*",
+      "model_behavior": "hallucinated",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-192",
+        "SMU-FAQ-195",
+        "SMU-FAQ-181"
+      ],
+      "retrieval_hit": null,
+      "scores": [
+        -1.9218,
+        -4.6965,
+        -4.9257
+      ],
+      "is_grounded": true,
+      "confidence": 0.641,
+      "latency_ms": 677.43,
+      "result": "FAIL",
+      "failure_category": "HALLUCINATION",
+      "explanation": "Failed to abstain: generated an unsupported substantive answer for information not present in the FAQ knowledge base.",
+      "evaluation_notes": "Verified absent from KB. Individual confidential room assignments are protected student records outside FAQ scope. System must abstain."
+    },
+    {
+      "id": "B5",
+      "query": "What is the current Wi-Fi password for the university library?",
+      "category": "IT & Technical Support",
+      "expected_behavior": "abstain",
+      "expected_answer": "The available FAQ data does not provide the current library Wi-Fi password. Contact university IT support.",
+      "target_faq_id": null,
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-013 - Housing & Dining]** regarding \"How do I access the Internet while on campus? Is Internet service available to visitors? How do I arrange wireless service?\":\n\nInternet is available to students, faculty, staff and alumni who have an 's' number and a password. Visitors may access the Internet on the guest computers in the Patrick Power Library. For more information about wireless access, visit the ITSS help desk in either the Atrium or Loyola Academic 268 or go to: On-Campus Wireless Access. Summer guests staying in residence are able to arrange wireless service through the Residence Security Desk.\n\n\n**Related Information [SMU-FAQ-126]:** As an authorized user, you would have received a username and password sent to the email your student provided when they gave you access. You can view the Student Account Centre by clicking the Authorized User Access tab.\n\n**Related Information [SMU-FAQ-163]:** SMU alumni are welcome to use the following library resources: Novanet and SMUWorldCat library catalogues (also available off-campus) e-books and e-journals (in-library use on guest computers only)* most research databases (in-library use on guest computers only)* print collections microform and microform readers photocopiers, printers and fax machine reference and research services *Off-campus access to SMU's electronic materials and research da...\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-013](https://smu.ca))*",
+      "model_behavior": "hallucinated",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-013",
+        "SMU-FAQ-126",
+        "SMU-FAQ-163"
+      ],
+      "retrieval_hit": null,
+      "scores": [
+        -2.3786,
+        -9.3556,
+        -9.5781
+      ],
+      "is_grounded": true,
+      "confidence": 0.546,
+      "latency_ms": 448.29,
+      "result": "FAIL",
+      "failure_category": "HALLUCINATION",
+      "explanation": "Failed to abstain: generated an unsupported substantive answer for information not present in the FAQ knowledge base.",
+      "evaluation_notes": "Verified absent from KB. Campus Wi-Fi operates via individual S# credentials or guest portals; no shared library Wi-Fi password exists in FAQ. System must abstain."
+    },
+    {
+      "id": "B6",
+      "query": "What grade did a particular student receive in the Database Systems course?",
+      "category": "Academics & Registration",
+      "expected_behavior": "abstain",
+      "expected_answer": "The FAQ dataset does not contain individual student grades. Access authorized student records through the university's official system.",
+      "target_faq_id": null,
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-005 - Tuition & Finance]** regarding \"I have received an 'A' number. What is it? How do I use it? What is the Self-Service Banner? How do I access it? How do I get an 's' number? Where can I find more information?\":\n\nOnce admitted, students receive a Banner ID number (known as an 'A' number) and PIN, while faculty and staff receive this information from Human Resources. 'A' number and PIN are used to access Banner Self-Service, where students can register for courses; print their T2202A for income tax purposes; pay for tuition; view exam schedules and grades, etc,. Faculty and Staff can access a variety of employment-related materials including pay stubs, leave records and income tax forms. Faculty can also use Banner to check class lists and submit grades. To access campus computers, network drives, SMUport, BlackBoard, and other services, all users need to activate an 's' number (s followed by 7 digits) by providing an 'A' number and PIN at: https://activate.smu.ca. For security reasons, 's' number needs to be re-activated every 90 days. For more information: http://www.smu.ca/eit/\n\n\n**Related Information [SMU-FAQ-240]:** Self-Service Banner is a site that allows students to look up and register for courses, access course and exam schedules, and view their academic transcript. To use Self-Service Banner (SSB), you must first activate your SMU account to receive your SSB login credentials (@smu.ca email address and password). Your initial temporary PIN is your date of birth in the format of DD/MM/YY (YY is the last two digits of the year).\n\n**Related Information [SMU-FAQ-228]:** Self-Service Banner is a student information system that allows you to: Register for courses Pay fees View your class schedule View your final grades Order official transcripts Print Canadian tax forms Change your personal information Access online resources\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-005](https://smu.ca))*",
+      "model_behavior": "hallucinated",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-005",
+        "SMU-FAQ-240",
+        "SMU-FAQ-228"
+      ],
+      "retrieval_hit": null,
+      "scores": [
+        1.7435,
+        1.0025,
+        0.7411
+      ],
+      "is_grounded": true,
+      "confidence": 0.986,
+      "latency_ms": 491.01,
+      "result": "FAIL",
+      "failure_category": "HALLUCINATION",
+      "explanation": "Failed to abstain: generated an unsupported substantive answer for information not present in the FAQ knowledge base.",
+      "evaluation_notes": "Verified absent from KB. Private student grades are protected FERPA/privacy records not in FAQ. System must abstain."
+    },
+    {
+      "id": "B7",
+      "query": "Which professor will teach each section of Computer Science in the next semester?",
+      "category": "Academics & Registration",
+      "expected_behavior": "abstain",
+      "expected_answer": "The available FAQ data does not establish future instructor assignments. Consult the official timetable or academic department.",
+      "target_faq_id": null,
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-006 - IT & Technical Support]** regarding \"Where do I go if I have computer problems? Where do I go for repairs to university computers? Where do I go for repairs to my personal computer? Where do I get more information?\":\n\nThe ITSS Help Desk provides help for problems related to software and computer use. ITSS Help Desk is in two locations, one in the Atrium and one in Loyola Academic 268. For University computers that need repair, the ITSS Help Desk provides referrals to ITSS Support Technologists. Repairs to personal computers are not provided on campus, but computer repair and servicing is available within walking distance of the university. For more information call the Help Desk at 496-8111, email helpdesk@smu.ca or go to: http://www.smu.ca/eit/.\n\n\n**Related Information [SMU-FAQ-250]:** Early Assist recommends that you contact your Professor/Instructor first if you are having difficulty in a particular course. Visit them during their office hours, send an email, or talk with them after class. Another option is to visit your Academic Advising Office. Not sure who best to talk to? Contact the Student Success Centre for further assistance studentsuccess@smu.ca.\n\n**Related Information [SMU-FAQ-026]:** Want to take that next step with technology in your coursework? Located in AT 107, next to the Just Us Caf, Centre for Academic Technologies (CAT) offers support and training (at no charge) to meet your needs. Drop in to the CAT, attend a workshop, or make an appointment with a student technology assistant for help with MS Office, Blackboard, and more - just ask! 496-8168, cat@smu.ca, www.smu.ca/cat\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-006](https://smu.ca))*",
+      "model_behavior": "hallucinated",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-006",
+        "SMU-FAQ-250",
+        "SMU-FAQ-026"
+      ],
+      "retrieval_hit": null,
+      "scores": [
+        0.7068,
+        -10.197,
+        -10.285
+      ],
+      "is_grounded": true,
+      "confidence": 0.961,
+      "latency_ms": 273.36,
+      "result": "FAIL",
+      "failure_category": "HALLUCINATION",
+      "explanation": "Failed to abstain: generated an unsupported substantive answer for information not present in the FAQ knowledge base.",
+      "evaluation_notes": "Verified absent from KB. Future semester faculty timetables are outside the static FAQ. System must abstain."
+    },
+    {
+      "id": "B8",
+      "query": "What is the exact Metro Transit bus arrival time at the university's nearest stop tomorrow at 8:15 AM?",
+      "category": "Campus & Transportation",
+      "expected_behavior": "abstain",
+      "expected_answer": "The FAQ dataset does not provide live or date-specific bus arrival times. Check the current Metro Transit schedule.",
+      "target_faq_id": null,
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-003 - Athletics & Student Life]** regarding \"Where do I get a pass for Metro Transit? How much does it cost? Are there special arrangements for students with disabilities? Where can I find transit schedules and route maps?\":\n\nAs part of compulsory student fees, full-time undergraduate and graduate students receive a U-Pass (Metro Transit bus/ferry pass) that's good from September until April. Students with disabilities can use the U-Pass on Access-A-Bus. There is no opting out except in the case of students who have CNIB passes. For bus passes, schedules and route maps, present a Saint Mary's University I.D. at the O'Donnell Hennessey Student Centre Information Desk. Part-time students, faculty and staff may purchase bus passes and bus tickets directly from Metro Transit, from Saint Mary's Student Centre Information Desk and at most local pharmacies and convenience stores. Schedules, route maps and information are available online at: http://www.smusa.ca and http://www.halifax.ca/transit/Schedules/index.php\n\n\n**Related Information [SMU-FAQ-116]:** For detailed locations of on-campus building, visit our Registration FAQs page.\n\n**Related Information [SMU-FAQ-007]:** first left onto McCully Street. Turn left at Robie Street and go to # 923. From the Annapolis Valley (Windsor, Wolfville and points west): Take Hwy-101 east to Hwy-102 south. Stay on Hwy-102 to the very end when it becomes Bayers Road. Continue along Bayers Road in the right hand lane until you reach Connaught Avenue. At Connaught Avenue, turn right. Follow Connaught to Jubilee Road. Turn left onto Jubilee Road. Take the third right onto Oxford S...\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-003](https://smu.ca))*",
+      "model_behavior": "hallucinated",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-003",
+        "SMU-FAQ-116",
+        "SMU-FAQ-007"
+      ],
+      "retrieval_hit": null,
+      "scores": [
+        -2.5044,
+        -8.7193,
+        -9.3093
+      ],
+      "is_grounded": true,
+      "confidence": 0.522,
+      "latency_ms": 1792.98,
+      "result": "FAIL",
+      "failure_category": "HALLUCINATION",
+      "explanation": "Failed to abstain: generated an unsupported substantive answer for information not present in the FAQ knowledge base.",
+      "evaluation_notes": "Verified absent from KB. Real-time dynamic municipal bus schedules are not in FAQ. System must abstain."
+    },
+    {
+      "id": "B9",
+      "query": "Has my residence payment been received and posted to my student account?",
+      "category": "Tuition & Finance",
+      "expected_behavior": "abstain",
+      "expected_answer": "The FAQ dataset cannot determine an individual's payment status. Check the authorized student account or contact the university's finance office.",
+      "target_faq_id": null,
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-183 - Housing & Dining]** regarding \"What are my residence fees and how do I pay them?\":\n\nResidence fees get applied to your student account for the fall term in mid-to late-August (mid-December for the winter term) and are paid the same way you would pay for your tuition. The payment options are available on the Service Centre webpage. Depending on the type of room/bed space you have been assigned in residence, your room fees will differ.\n\n\n**Related Information [SMU-FAQ-127]:** All term statements are available through the Student Account Center. Notifications will be sent to your SMU email address when future terms' statements are available. Tuition due dates will be listed at the bottom of your statement and can be found in the Academic Calendar of Events.\n\n**Related Information [SMU-FAQ-128]:** You can make online bank payments by Pre-authorized debit through Student Account Centre.\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-183](https://smu.ca))*",
+      "model_behavior": "hallucinated",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-183",
+        "SMU-FAQ-127",
+        "SMU-FAQ-128"
+      ],
+      "retrieval_hit": null,
+      "scores": [
+        2.9665,
+        -0.5785,
+        -0.9083
+      ],
+      "is_grounded": true,
+      "confidence": 0.996,
+      "latency_ms": 498.41,
+      "result": "FAIL",
+      "failure_category": "HALLUCINATION",
+      "explanation": "Failed to abstain: generated an unsupported substantive answer for information not present in the FAQ knowledge base.",
+      "evaluation_notes": "Verified absent from KB. Individual student ledger transactions are private financial records. System must abstain."
+    },
+    {
+      "id": "B10",
+      "query": "What will the university's exact residence fees be for the 2027\u20132028 academic year?",
+      "category": "Housing & Dining",
+      "expected_behavior": "abstain",
+      "expected_answer": "The available FAQ data does not establish exact residence fees for the 2027\u20132028 academic year. Consult the official fee schedule when available.",
+      "target_faq_id": null,
+      "actual_response": "Based on the official SMU documentation **[SMU-FAQ-181 - Housing & Dining]** regarding \"How do I apply for SMU residence?\":\n\nRESIDENCE APPLICATIONS for the 2024-25 Academic Year will open February 1, 2024.* Students attending Saint Mary's who are interested in living in residence can apply online through our Housing Portal. Please Note: New SMU students must first pay the admission deposit in order to activate their SMU credentials (S# and SMU email). These credentials will then allow them to access the Housing portal. Bed spaces in residence are assigned based on a number of factors, including seniority and deposit date, but preferences are not guaranteed. If your preferences are not available, you will be assigned to any available bed space. Students currently living in residence who wish to re-apply to live in residence the following academic year should check their SMU email in January for information on the re-application / seniority process.\n\n\n**Related Information [SMU-FAQ-183]:** Residence fees get applied to your student account for the fall term in mid-to late-August (mid-December for the winter term) and are paid the same way you would pay for your tuition. The payment options are available on the Service Centre webpage. Depending on the type of room/bed space you have been assigned in residence, your room fees will differ.\n\n**Related Information [SMU-FAQ-127]:** All term statements are available through the Student Account Center. Notifications will be sent to your SMU email address when future terms' statements are available. Tuition due dates will be listed at the bottom of your statement and can be found in the Academic Calendar of Events.\n\n*Source: SMU FAQ Official Archive ([SMU-FAQ-181](https://smu.ca))*",
+      "model_behavior": "hallucinated",
+      "retrieved_faq_ids": [
+        "SMU-FAQ-181",
+        "SMU-FAQ-183",
+        "SMU-FAQ-127"
+      ],
+      "retrieval_hit": null,
+      "scores": [
+        -1.5483,
+        -2.5995,
+        -3.6764
+      ],
+      "is_grounded": true,
+      "confidence": 0.721,
+      "latency_ms": 689.8,
+      "result": "FAIL",
+      "failure_category": "HALLUCINATION",
+      "explanation": "Failed to abstain: generated an unsupported substantive answer for information not present in the FAQ knowledge base.",
+      "evaluation_notes": "Verified absent from KB. Long-range future residence rates for 2027-2028 do not exist in current documentation. System must abstain."
+    }
+  ]
+}
