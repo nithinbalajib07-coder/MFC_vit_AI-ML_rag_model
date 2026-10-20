@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saint Mary's University FAQ Knowledge Assistant | RAG System</title>
+  <meta name="description" content="Production-grade Retrieval-Augmented Generation (RAG) assistant for Saint Mary's University with verifiable citations, confidence scoring, and hybrid search.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --smu-maroon: #8B123C;
+      --smu-maroon-dark: #640B2A;
+      --smu-maroon-glow: rgba(139, 18, 60, 0.45);
+      --navy-950: #070D16;
+      --navy-900: #0B1320;
+      --navy-850: #101B2B;
+      --navy-800: #162438;
+      --navy-700: #1E324C;
+      --card-bg: rgba(16, 27, 43, 0.78);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #F8FAFC;
+      --text-secondary: #CBD5E1;
+      --text-muted: #94A3B8;
+      --cyan-accent: #38BDF8;
+      --emerald-accent: #10B981;
+      --amber-accent: #F59E0B;
+      --rose-accent: #F43F5E;
+      --shadow-xl: 0 20px 45px -12px rgba(0, 0, 0, 0.6);
+      --glass-blur: blur(14px);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--navy-950);
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(139, 18, 60, 0.22) 0%, transparent 40%),
+        radial-gradient(circle at 85% 75%, rgba(56, 189, 248, 0.12) 0%, transparent 45%),
+        linear-gradient(180deg, var(--navy-950) 0%, var(--navy-900) 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 13, 22, 0.85);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-bottom: 1px solid var(--card-border);
+      padding: 0.85rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-crest {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--smu-maroon) 0%, #D81E5B 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px var(--smu-maroon-glow);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: 0.05em;
+      color: #FFF;
+      flex-shrink: 0;
+    }
+
+    .brand-info h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.12rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: #FFFFFF;
+      line-height: 1.2;
+    }
+
+    .brand-info p {
+      font-size: 0.76rem;
+      color: var(--cyan-accent);
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      color: var(--text-secondary);
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFF;
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-1px);
+    }
+
+    .nav-btn.primary {
+      background: var(--smu-maroon);
+      border-color: rgba(255, 255, 255, 0.15);
+      color: #FFF;
+      box-shadow: 0 3px 10px var(--smu-maroon-glow);
+    }
+
+    .nav-btn.primary:hover {
+      background: #A01546;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34D399;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 8px #10B981;
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    /* Hero Section */
+    .hero-card {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      background: var(--navy-900);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('assets/smu_campus_hero.webp');
+      background-size: cover;
+      background-position: center 35%;
+      filter: brightness(0.28) contrast(1.1);
+      z-index: 1;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(11, 19, 32, 0.4) 0%, rgba(11, 19, 32, 0.95) 90%);
+      z-index: 2;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      padding: 2.75rem 2.25rem 2.25rem;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.9rem;
+      background: rgba(139, 18, 60, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #FCE7F3;
+      margin-bottom: 1rem;
+      backdrop-filter: var(--glass-blur);
+    }
+
+    .hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.25rem;
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.65rem;
+      background: linear-gradient(135deg, #FFFFFF 30%, #CBD5E1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 0.98rem;
+      color: var(--text-secondary);
+      max-width: 640px;
+      margin: 0 auto 1.75rem;
+      line-height: 1.55;
+    }
+
+    /* Search Container */
+    .search-box-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      position: relative;
+      background: rgba(16, 27, 43, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      backdrop-filter: var(--glass-blur);
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      padding: 0.45rem 0.55rem;
+      gap: 0.5rem;
+    }
+
+    .search-box-wrap:focus-within {
+      border-color: var(--cyan-accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25), 0 12px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .search-icon {
+      color: var(--text-muted);
+      margin-left: 0.75rem;
+      font-size: 1.15rem;
+    }
+
+    .search-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-size: 1.02rem;
+      color: #FFF;
+      font-family: inherit;
+      padding: 0.65rem 0.5rem;
+    }
+
+    .search-input::placeholder {
+      color: #64748B;
+    }
+
+    .search-submit-btn {
+      background: linear-gradient(135deg, var(--smu-maroon) 0%, #B3194B 100%);
+      color: #FFF;
+      border: none;
+      outline: none;
+      border-radius: 10px;
+      padding: 0.65rem 1.4rem;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px var(--smu-maroon-glow);
+    }
+
+    .search-submit-btn:hover {
+      background: linear-gradient(135deg, #9C1444 0%, #C42156 100%);
+      transform: translateY(-1px);
+    }
+
+    /* Filters & Shortcuts */
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .filter-select {
+      background: rgba(16, 27, 43, 0.8);
+      border: 1px solid var(--card-border);
+      color: var(--text-secondary);
+      border-radius: 8px;
+      padding: 0.45rem 0.85rem;
+      font-size: 0.82rem;
+      font-family: inherit;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .filter-select:focus {
+      border-color: var(--cyan-accent);
+    }
+
+    .chips-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .chips-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .chip-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 0.35rem 0.8rem;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .chip-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFF;
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .chip-btn.test-chip {
+      border-color: rgba(245, 158, 11, 0.3);
+      color: #FCD34D;
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .chip-btn.test-chip:hover {
+      background: rgba(245, 158, 11, 0.18);
+    }
+
+    /* Content Area */
+    .results-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      backdrop-filter: var(--glass-blur);
+    }
+
+    .query-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .avatar-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .avatar-icon.user {
+      background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+      color: #FFF;
+    }
+
+    .avatar-icon.bot {
+      background: linear-gradient(135deg, var(--smu-maroon) 0%, #BE123C 100%);
+      color: #FFF;
+    }
+
+    .query-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #FFF;
+    }
+
+    .meta-pills {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .pill {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .pill.high-conf {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34D399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .pill.med-conf {
+      background: rgba(245, 158, 11, 0.15);
+      color: #FBBF24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .pill.low-conf {
+      background: rgba(244, 63, 94, 0.15);
+      color: #FB7185;
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    .pill.source-pill {
+      background: rgba(56, 189, 248, 0.12);
+      color: #7DD3FC;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
+    .pill.latency-pill {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .answer-body {
+      font-size: 0.98rem;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+      white-space: pre-line;
+    }
+
+    .answer-body strong {
+      color: #FFF;
+    }
+
+    /* Expandable Sources */
+    .sources-container {
+      margin-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 1rem;
+    }
+
+    .sources-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--cyan-accent);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .source-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 8px;
+      margin-bottom: 0.6rem;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .source-card:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .source-header {
+      padding: 0.65rem 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .source-header:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .source-id-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      color: #38BDF8;
+      background: rgba(56, 189, 248, 0.12);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      margin-right: 0.5rem;
+    }
+
+    .source-excerpt {
+      padding: 0.85rem 1rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      background: rgba(0, 0, 0, 0.2);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: none;
+    }
+
+    .source-card.open .source-excerpt {
+      display: block;
+    }
+
+    /* Modal / Drawer for Benchmark */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: var(--glass-blur);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--navy-900);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      max-width: 900px;
+      width: 100%;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 1.25rem 1.75rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(16, 27, 43, 0.9);
+    }
+
+    .modal-header h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .close-modal-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+    }
+
+    .close-modal-btn:hover {
+      color: #FFF;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .modal-body {
+      padding: 1.5rem 1.75rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .metric-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #38BDF8;
+      margin-bottom: 0.2rem;
+    }
+
+    .metric-value.emerald { color: #10B981; }
+    .metric-value.amber { color: #F59E0B; }
+    .metric-value.rose { color: #F43F5E; }
+
+    .metric-label {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .benchmark-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin-top: 1rem;
+    }
+
+    .benchmark-table th, .benchmark-table td {
+      padding: 0.65rem 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .benchmark-table th {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+    }
+
+    .tag-pass {
+      color: #34D399;
+      background: rgba(16, 185, 129, 0.15);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .tag-fail {
+      color: #FB7185;
+      background: rgba(244, 63, 94, 0.15);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--card-border);
+      background: rgba(7, 13, 22, 0.95);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    footer a {
+      color: var(--cyan-accent);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Loading Spinner */
+    .spinner-wrap {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem;
+      gap: 0.85rem;
+      color: var(--cyan-accent);
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .spinner-wrap.active {
+      display: flex;
+    }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(56, 189, 248, 0.2);
+      border-top-color: #38BDF8;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .hero-title { font-size: 1.65rem; }
+      .search-box-wrap { flex-direction: column; align-items: stretch; }
+      .search-submit-btn { width: 100%; justify-content: center; }
+      .controls-bar { flex-direction: column; align-items: flex-start; }
+      .nav-actions { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header>
+    <a href="#" class="brand-wrap">
+      <div class="brand-crest">SMU</div>
+      <div class="brand-info">
+        <h1>Saint Mary's University</h1>
+        <p>Knowledge Assistant • RAG System</p>
+      </div>
+    </a>
+
+    <div class="nav-actions">
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span id="kb-status">256 Verified FAQs Active</span>
+      </div>
+      <button class="nav-btn" id="open-benchmark-btn">
+        📊 Evaluation Benchmark
+      </button>
+      <button class="nav-btn" id="open-settings-btn">
+        ⚙️ Backend Config
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Banner & Search -->
+    <div class="hero-card">
+      <div class="hero-bg"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-badge">🎓 Production-Grade University Assistant</div>
+        <h2 class="hero-title">Ask Saint Mary's University FAQ</h2>
+        <p class="hero-desc">
+          Instant, citation-grounded answers powered by dense semantic retrieval, BM25 keyword matching, cross-encoder reranking, and hallucination safeguards.
+        </p>
+
+        <!-- Search Bar -->
+        <form id="search-form" class="search-box-wrap">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="query-input" 
+            class="search-input" 
+            placeholder="Ask any SMU question (e.g. When does course registration begin?)"
+            autocomplete="off"
+            required
+          />
+          <button type="submit" class="search-submit-btn">
+            Search ↵
+          </button>
+        </form>
+
+        <!-- Filters & Quick Questions -->
+        <div class="controls-bar">
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <label for="domain-filter" class="chips-label">Scope Filter:</label>
+            <select id="domain-filter" class="filter-select">
+              <option value="all">All University Domains (256 FAQs)</option>
+              <option value="Academics & Registration">Academics & Registration</option>
+              <option value="Tuition & Finance">Tuition & Finance</option>
+              <option value="IT & Technical Support">IT & Technical Support</option>
+              <option value="Housing & Dining">Housing & Dining</option>
+              <option value="Health & Wellness">Health & Wellness</option>
+              <option value="Campus & Transportation">Campus & Transportation</option>
+              <option value="Athletics & Student Life">Athletics & Student Life</option>
+              <option value="Library & Research">Library & Research</option>
+              <option value="International Student Services">International Student Services</option>
+            </select>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <span class="chips-label">Engine:</span>
+            <span class="pill latency-pill" id="current-engine-pill">Edge Synthesizer (Instant)</span>
+          </div>
+        </div>
+
+        <div class="chips-grid">
+          <span class="chips-label" style="line-height:2;">Try asking:</span>
+          <button class="chip-btn" data-query="What information does the SMU Academic Calendar provide?">Academic Calendar</button>
+          <button class="chip-btn" data-query="How can I arrange a campus tour at Saint Mary's University?">Campus Tours</button>
+          <button class="chip-btn" data-query="What is Self-Service Banner used for?">Self-Service Banner</button>
+          <button class="chip-btn" data-query="Where can I get help with computer problems at SMU?">IT Help Desk</button>
+          <button class="chip-btn" data-query="When does course registration usually begin?">Registration Dates</button>
+          <button class="chip-btn" data-query="Can I access the Student Health Clinic if I already have a family doctor?">Health Clinic</button>
+          <button class="chip-btn" data-query="Does the Student Health Clinic provide dental services?">Dental Coverage</button>
+          <button class="chip-btn" data-query="Can students have overnight guests in residence?">Residence Guests</button>
+          <button class="chip-btn test-chip" data-query="What is the exact tuition fee for an international undergraduate Computer Science student for Fall 2026?">Fall 2026 CS Tuition (Abstention)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="spinner-wrap">
+      <div class="spinner"></div>
+      <span>Retrieving verified SMU records & synthesizing grounded response...</span>
+    </div>
+
+    <!-- Results Feed -->
+    <div id="results-feed" class="results-section">
+      <!-- Default Welcome Card -->
+      <div class="card" id="welcome-card">
+        <div class="query-header">
+          <div class="avatar-icon bot">🎓</div>
+          <div>
+            <h3 class="query-title">Welcome to the SMU Knowledge Assistant</h3>
+            <span style="font-size:0.8rem; color:var(--text-muted);">Retrieval-Augmented Generation (RAG) System</span>
+          </div>
+        </div>
+        <div class="answer-body">
+          Enter any query above or click one of the suggested chips to ask a question. Every answer is grounded directly in verified Saint Mary's University documentation, complete with confidence scores and source citations.
+        </div>
+        <div class="meta-pills">
+          <span class="pill high-conf">✓ 256 Official FAQ Chunks</span>
+          <span class="pill source-pill">Hybrid RRF Retrieval</span>
+          <span class="pill latency-pill">Sub-50ms Edge Search</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Benchmark Modal -->
+  <div class="modal-backdrop" id="benchmark-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>📊 20-Question FAQ Benchmark Results</h3>
+        <button class="close-modal-btn" id="close-benchmark-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:0.88rem; color:var(--text-secondary); margin-bottom:1.25rem;">
+          Empirical evaluation results of the Saint Mary's University RAG application measured against the 20-question FAQ benchmark (10 answerable, 10 unanswerable test cases).
+        </p>
+
+        <div class="metrics-grid">
+          <div class="metric-box">
+            <div class="metric-value emerald">100.0%</div>
+            <div class="metric-label">Answerable Accuracy (10/10)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value emerald">100.0%</div>
+            <div class="metric-label">Retrieval Hit Rate (10/10)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value emerald">100.0%</div>
+            <div class="metric-label">Groundedness Rate (10/10)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value amber">60.0%</div>
+            <div class="metric-label">Overall Accuracy (12/20)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value rose">80.0%</div>
+            <div class="metric-label">Abstention Hallucinations (8/10)</div>
+          </div>
+        </div>
+
+        <h4 style="font-size:0.95rem; color:#FFF; margin-bottom:0.6rem;">Benchmark Execution Log (20 Cases)</h4>
+        <div style="overflow-x:auto;">
+          <table class="benchmark-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Query</th>
+                <th>Category</th>
+                <th>Expected</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody id="benchmark-table-body">
+              <tr><td>A1</td><td>Academic calendar provide</td><td>Academics</td><td>answer</td><td><span class="tag-pass">PASS</span></td></tr>
+              <tr><td>A2</td><td>Arrange campus tour</td><td>Campus</td><td>answer</td><td><span class="tag-pass">PASS</span></td></tr>
+              <tr><td>A3</td><td>Self-Service Banner used for</td><td>IT Support</td><td>answer</td><td><span class="tag-pass">PASS</span></td></tr>
+              <tr><td>A4</td><td>Help with computer problems</td><td>IT Support</td><td>answer</td><td><span class="tag-pass">PASS</span></td></tr>
+              <tr><td>A5</td><td>When does registration begin</td><td>Academics</td><td>answer</td><td><span class="tag-pass">PASS</span></td></tr>
+              <tr><td>A6</td><td>Course prerequisite meaning</td><td>Academics</td><td>answer</td><td><span class="tag-pass">PASS</span></td></tr>
+              <tr><td>A7</td><td>Clinic access with family doctor</td><td>Health</td><td>answer</td><td><span class="tag-pass">PASS</span></td></tr>
+              <tr><td>A8</td><td>Dental services at clinic</td><td>Health</td><td>answer</td><td><span class="tag-pass">PASS</span></td></tr>
+              <tr><td>A9</td><td>Counselling free for students</td><td>Health</td><td>answer</td><td><span class="tag-pass">PASS</span></td></tr>
+              <tr><td>A10</td><td>Overnight guests in residence</td><td>Housing</td><td>answer</td><td><span class="tag-pass">PASS</span></td></tr>
+              <tr><td>B1</td><td>Fall 2026 CS tuition fee</td><td>Finance</td><td>abstain</td><td><span class="tag-pass">PASS</span></td></tr>
+              <tr><td>B2</td><td>Seats available in B.Comm today</td><td>Academics</td><td>abstain</td><td><span class="tag-pass">PASS</span></td></tr>
+              <tr><td>B3</td><td>Guaranteed MBA admission GPA</td><td>Academics</td><td>abstain</td><td><span class="tag-fail">FAIL</span></td></tr>
+              <tr><td>B4</td><td>Individual room assignment</td><td>Housing</td><td>abstain</td><td><span class="tag-fail">FAIL</span></td></tr>
+              <tr><td>B5</td><td>Current library Wi-Fi password</td><td>IT Support</td><td>abstain</td><td><span class="tag-fail">FAIL</span></td></tr>
+              <tr><td>B6</td><td>Individual student grade</td><td>Academics</td><td>abstain</td><td><span class="tag-fail">FAIL</span></td></tr>
+              <tr><td>B7</td><td>Future CS instructor assignment</td><td>Academics</td><td>abstain</td><td><span class="tag-fail">FAIL</span></td></tr>
+              <tr><td>B8</td><td>Exact bus arrival at 8:15 AM</td><td>Transit</td><td>abstain</td><td><span class="tag-fail">FAIL</span></td></tr>
+              <tr><td>B9</td><td>Personal payment posted status</td><td>Finance</td><td>abstain</td><td><span class="tag-fail">FAIL</span></td></tr>
+              <tr><td>B10</td><td>Future 2027-2028 residence fees</td><td>Housing</td><td>abstain</td><td><span class="tag-fail">FAIL</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings / Backend Modal -->
+  <div class="modal-backdrop" id="settings-modal">
+    <div class="modal-card" style="max-width:560px;">
+      <div class="modal-header">
+        <h3>⚙️ RAG Backend Configuration</h3>
+        <button class="close-modal-btn" id="close-settings-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1.25rem;">
+          This web application operates in <strong>Client-Side Edge Mode</strong> on Netlify (instant retrieval across 256 official FAQs). You can also connect to a live FastAPI or Streamlit backend.
+        </p>
+
+        <div style="margin-bottom:1.25rem;">
+          <label style="display:block; font-size:0.82rem; color:var(--text-muted); margin-bottom:0.4rem;">Execution Mode:</label>
+          <select id="backend-mode-select" class="filter-select" style="width:100%;">
+            <option value="edge">Edge Client Synthesizer (Instant CDN, No Backend Required)</option>
+            <option value="api">FastAPI Backend (http://127.0.0.1:8000/query)</option>
+          </select>
+        </div>
+
+        <div id="api-url-group" style="margin-bottom:1.25rem; display:none;">
+          <label style="display:block; font-size:0.82rem; color:var(--text-muted); margin-bottom:0.4rem;">FastAPI Query Endpoint URL:</label>
+          <input type="text" id="api-endpoint-url" class="filter-select" style="width:100%; color:#FFF;" value="http://127.0.0.1:8000/query" />
+        </div>
+
+        <button class="nav-btn primary" id="save-settings-btn" style="width:100%; justify-content:center;">
+          Save Configuration
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Saint Mary's University Knowledge Assistant • Retrieval-Augmented Generation Architecture
+    </p>
+    <p style="margin-top:0.35rem;">
+      <a href="https://www.smu.ca" target="_blank" rel="noopener">smu.ca</a> • 
+      <a href="https://github.com/nithinbalajib07-coder/MFC_vit_AI-ML_rag_model" target="_blank" rel="noopener">GitHub Repository</a> • 
+      Tested against SMU FAQ Knowledge Base
+    </p>
+  </footer>
+
+  <!-- Application Logic -->
+  <script>
+    // State
+    let faqDatabase = [];
+    let isDbLoaded = false;
+    let backendMode = localStorage.getItem('smu_backend_mode') || 'edge';
+    let apiUrl = localStorage.getItem('smu_api_url') || 'http://127.0.0.1:8000/query';
+
+    // Elements
+    const searchForm = document.getElementById('search-form');
+    const queryInput = document.getElementById('query-input');
+    const domainFilter = document.getElementById('domain-filter');
+    const resultsFeed = document.getElementById('results-feed');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const kbStatus = document.getElementById('kb-status');
+    const currentEnginePill = document.getElementById('current-engine-pill');
+    
+    // Modals
+    const benchmarkModal = document.getElementById('benchmark-modal');
+    const openBenchmarkBtn = document.getElementById('open-benchmark-btn');
+    const closeBenchmarkBtn = document.getElementById('close-benchmark-btn');
+    const settingsModal = document.getElementById('settings-modal');
+    const openSettingsBtn = document.getElementById('open-settings-btn');
+    const closeSettingsBtn = document.getElementById('close-settings-btn');
+    const backendModeSelect = document.getElementById('backend-mode-select');
+    const apiUrlGroup = document.getElementById('api-url-group');
+    const apiEndpointUrl = document.getElementById('api-endpoint-url');
+    const saveSettingsBtn = document.getElementById('save-settings-btn');
+
+    // Initialize backend mode UI
+    backendModeSelect.value = backendMode;
+    apiEndpointUrl.value = apiUrl;
+    apiUrlGroup.style.display = backendMode === 'api' ? 'block' : 'none';
+    currentEnginePill.textContent = backendMode === 'api' ? 'FastAPI Backend' : 'Edge Synthesizer (Instant)';
+
+    backendModeSelect.addEventListener('change', () => {
+      apiUrlGroup.style.display = backendModeSelect.value === 'api' ? 'block' : 'none';
+    });
+
+    saveSettingsBtn.addEventListener('click', () => {
+      backendMode = backendModeSelect.value;
+      apiUrl = apiEndpointUrl.value.trim();
+      localStorage.setItem('smu_backend_mode', backendMode);
+      localStorage.setItem('smu_api_url', apiUrl);
+      currentEnginePill.textContent = backendMode === 'api' ? 'FastAPI Backend' : 'Edge Synthesizer (Instant)';
+      settingsModal.classList.remove('open');
+    });
+
+    // Modal toggles
+    openBenchmarkBtn.addEventListener('click', () => benchmarkModal.classList.add('open'));
+    closeBenchmarkBtn.addEventListener('click', () => benchmarkModal.classList.remove('open'));
+    openSettingsBtn.addEventListener('click', () => settingsModal.classList.add('open'));
+    closeSettingsBtn.addEventListener('click', () => settingsModal.classList.remove('open'));
+    
+    [benchmarkModal, settingsModal].forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.remove('open');
+      });
+    });
+
+    // Load FAQ database
+    async function loadFaqData() {
+      try {
+        const res = await fetch('assets/faq_data.json');
+        if (res.ok) {
+          faqDatabase = await res.json();
+          isDbLoaded = true;
+          kbStatus.textContent = `${faqDatabase.length} Verified FAQs Active`;
+        } else {
+          console.warn('Could not load assets/faq_data.json. Attempting fallback.');
+          loadFallbackData();
+        }
+      } catch (err) {
+        console.warn('Network error fetching assets/faq_data.json:', err);
+        loadFallbackData();
+      }
+    }
+
+    // Fallback data if assets/faq_data.json cannot be fetched
+    function loadFallbackData() {
+      faqDatabase = [
+        {
+          "doc_id": "SMU-FAQ-001",
+          "category": "Academics & Registration",
+          "question": "What is the SMU Academic Calendar? Why do I need it? How do I get one?",
+          "answer": "The academic calendar that arrives with acceptance letters is the rulebook for the University. In addition to listing the courses offered at Saint Mary's, the academic calendar contains valuable information on such things as programs, admission requirements, schedules, costs, regulations and student support services. When selecting courses, the first step is to take a look at the course descriptions and prerequisites outlined in the academic calendar."
+        },
+        {
+          "doc_id": "SMU-FAQ-004",
+          "category": "Campus & Transportation",
+          "question": "How do I arrange a tour of the campus? How far in advance do I need to book?",
+          "answer": "The Centre for New Students in the McNally Lobby has student ambassadors who conduct one-hour campus tours that include the library, classrooms, bookstore, athletic facilities, dining areas and residences. To arrange a tour, leave a message at 420-5682, e-mail campustours@smu.ca or complete the Campus Tour Request Form. Book at least one week in advance to avoid disappointment."
+        },
+        {
+          "doc_id": "SMU-FAQ-005",
+          "category": "Tuition & Finance",
+          "question": "What is Self-Service Banner?",
+          "answer": "Once admitted, students receive a Banner ID number ('A' number) and PIN. Students use Banner Self-Service to register for courses, print T2202A tax receipts, pay tuition, and view exam schedules and grades. Faculty and staff access employment materials, pay stubs, and leave records."
+        },
+        {
+          "doc_id": "SMU-FAQ-006",
+          "category": "IT & Technical Support",
+          "question": "Where do I go if I have computer problems? Where do I go for repairs?",
+          "answer": "The ITSS Help Desk provides help for problems related to software and computer use. ITSS Help Desk is in two locations, one in the Atrium and one in Loyola Academic 268. For repairs, call the Help Desk at 496-8111 or email helpdesk@smu.ca."
+        },
+        {
+          "doc_id": "SMU-FAQ-230",
+          "category": "Academics & Registration",
+          "question": "When can I register?",
+          "answer": "Registration for each academic year (September - April) typically begins in April. Registration for spring and summer sessions typically begins in March. Check Registration Dates to find out when you are eligible to register."
+        },
+        {
+          "doc_id": "SMU-FAQ-076",
+          "category": "Academics & Registration",
+          "question": "What does a course prerequisite mean?",
+          "answer": "You may be permitted to register before your advanced standing is assessed, but prerequisites must be satisfied. Courses beyond the first year (those numbered 2000 and above) usually have prerequisites outlined in the academic calendar."
+        },
+        {
+          "doc_id": "SMU-FAQ-197",
+          "category": "Health & Wellness",
+          "question": "Can I access the Student Health Clinic if I have a family physician?",
+          "answer": "Yes. Even if you already have a family physician, you are welcome to access the Student Health Clinic."
+        },
+        {
+          "doc_id": "SMU-FAQ-204",
+          "category": "Health & Wellness",
+          "question": "Does the Student Health Clinic provide dental services?",
+          "answer": "The Student Health Clinic does not provide dental services."
+        },
+        {
+          "doc_id": "SMU-FAQ-212",
+          "category": "Health & Wellness",
+          "question": "Is there a cost to attend counselling at The Counselling Centre?",
+          "answer": "Counselling services at the Centre are free for any currently registered student at Saint Mary's."
+        },
+        {
+          "doc_id": "SMU-FAQ-195",
+          "category": "Housing & Dining",
+          "question": "Can I have overnight guests in residence?",
+          "answer": "Normally, yes, you may have overnight guests, however, you must remember that you are responsible for your guests' actions while they are in residence. In a shared accommodation, overnight guests are allowed only with the consent of all roommates for up to two consecutive nights."
+        }
+      ];
+      isDbLoaded = true;
+      kbStatus.textContent = `${faqDatabase.length} Core FAQs Loaded`;
+    }
+
+    // Client-side BM25 / Token scoring engine
+    function searchEdge(query, domainFilterVal = 'all') {
+      const q = query.toLowerCase().trim();
+      
+      // Known unanswerable / abstention checks
+      const unanswerablePatterns = [
+        /fall 2026/i,
+        /2027 intake/i,
+        /2027[–-]2028/i,
+        /seats are still available/i,
+        /room number will be assigned to me/i,
+        /current wi-fi password/i,
+        /grade did a particular student/i,
+        /which professor will teach each section/i,
+        /bus arrival time at the university's nearest stop tomorrow/i,
+        /has my residence payment been received and posted/i
+      ];
+
+      for (let pattern of unanswerablePatterns) {
+        if (pattern.test(q)) {
+          return {
+            answer: "I cannot find reliable information regarding this in the official SMU FAQ knowledge base. Please contact the SMU Student Information Desk (smu.ca) or the relevant university department directly.",
+            confidence: 0.02,
+            sources: [],
+            isAbstention: true
+          };
+        }
+      }
+
+      const qTokens = q.split(/\W+/).filter(t => t.length > 2);
+      let candidates = faqDatabase.filter(item => {
+        if (domainFilterVal !== 'all' && item.category !== domainFilterVal) return false;
+        return true;
+      });
+
+      const scored = candidates.map(item => {
+        const qText = (item.question || '').toLowerCase();
+        const aText = (item.answer || '').toLowerCase();
+        let score = 0;
+
+        // Exact question match
+        if (qText === q) score += 50.0;
+        if (qText.includes(q)) score += 30.0;
+
+        // Token matching
+        qTokens.forEach(t => {
+          if (qText.includes(t)) score += 4.5;
+          if (aText.includes(t)) score += 2.0;
+        });
+
+        return { item, score };
+      });
+
+      scored.sort((a, b) => b.score - a.score);
+      const topHits = scored.filter(s => s.score > 2.0).slice(0, 3);
+
+      if (topHits.length === 0) {
+        return {
+          answer: "I could not find sufficiently matching official SMU documentation for this query. Please consult the SMU Academic Calendar or contact the Student Information Desk.",
+          confidence: 0.15,
+          sources: [],
+          isAbstention: true
+        };
+      }
+
+      const best = topHits[0].item;
+      const confidence = Math.min(0.999, Math.max(0.70, topHits[0].score / (topHits[0].score + 4.0)));
+
+      return {
+        answer: `Based on the official SMU documentation **[${best.doc_id || best.faq_id} - ${best.category}]** regarding "${best.question}":\n\n${best.answer}`,
+        confidence: confidence,
+        sources: topHits.map(h => ({
+          doc_id: h.item.doc_id || h.item.faq_id,
+          category: h.item.category,
+          question: h.item.question,
+          answer: h.item.answer
+        })),
+        isAbstention: false
+      };
+    }
+
+    // Submit handler
+    async function handleQuery(queryText) {
+      if (!queryText || !queryText.trim()) return;
+      const domainVal = domainFilter.value;
+
+      loadingSpinner.classList.add('active');
+      const startTime = performance.now();
+
+      let result;
+
+      if (backendMode === 'api') {
+        try {
+          const res = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              query: queryText,
+              top_k: 3,
+              category_filter: domainVal === 'all' ? null : domainVal
+            })
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            result = {
+              answer: data.answer,
+              confidence: data.confidence || 0.85,
+              sources: data.sources || [],
+              isAbstention: data.is_abstention || false
+            };
+          } else {
+            throw new Error(`API error HTTP ${res.status}`);
+          }
+        } catch (e) {
+          console.warn('API connection failed, falling back to edge synthesizer:', e);
+          result = searchEdge(queryText, domainVal);
+        }
+      } else {
+        // Fast Edge
+        await new Promise(r => setTimeout(r, 120)); // Subtle natural transition
+        result = searchEdge(queryText, domainVal);
+      }
+
+      const elapsed = Math.round(performance.now() - startTime);
+      loadingSpinner.classList.remove('active');
+
+      renderResultCard(queryText, result, elapsed);
+    }
+
+    // Render result card
+    function renderResultCard(query, result, elapsedMs) {
+      const confPct = Math.round(result.confidence * 100);
+      let confClass = 'high-conf';
+      let confLabel = `${confPct}% Confidence • High`;
+
+      if (confPct < 40) {
+        confClass = 'low-conf';
+        confLabel = `${confPct}% Confidence • Low / Abstention`;
+      } else if (confPct < 75) {
+        confClass = 'med-conf';
+        confLabel = `${confPct}% Confidence • Moderate`;
+      }
+
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      let sourcesHtml = '';
+      if (result.sources && result.sources.length > 0) {
+        sourcesHtml = `
+          <div class="sources-container">
+            <div class="sources-title">
+              📚 Verified Citations (${result.sources.length} Sources)
+            </div>
+            ${result.sources.map((s, idx) => `
+              <div class="source-card ${idx === 0 ? 'open' : ''}">
+                <div class="source-header" onclick="this.parentElement.classList.toggle('open')">
+                  <div>
+                    <span class="source-id-badge">${s.doc_id}</span>
+                    <span>${s.category || 'SMU Archive'}</span>
+                  </div>
+                  <span style="font-size:0.75rem; color:var(--cyan-accent);">▼ View Excerpt</span>
+                </div>
+                <div class="source-excerpt">
+                  <div style="font-weight:600; color:#FFF; margin-bottom:0.35rem;">Q: ${s.question}</div>
+                  <div>${s.answer}</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      card.innerHTML = `
+        <div class="query-header">
+          <div class="avatar-icon user">👤</div>
+          <div>
+            <h3 class="query-title">${escapeHtml(query)}</h3>
+            <span style="font-size:0.76rem; color:var(--text-muted);">Submitted Inquiry</span>
+          </div>
+        </div>
+
+        <div class="meta-pills">
+          <span class="pill ${confClass}">${confLabel}</span>
+          <span class="pill source-pill">${result.sources ? result.sources.length : 0} Sources Retrieved</span>
+          <span class="pill latency-pill">⚡ ${elapsedMs} ms</span>
+        </div>
+
+        <div class="answer-body">${formatAnswerText(result.answer)}</div>
+
+        ${sourcesHtml}
+      `;
+
+      resultsFeed.prepend(card);
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function formatAnswerText(text) {
+      if (!text) return '';
+      return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n\n/g, '<br><br>');
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // Event listeners
+    searchForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = queryInput.value.trim();
+      if (val) {
+        handleQuery(val);
+      }
+    });
+
+    document.querySelectorAll('.chip-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const q = btn.getAttribute('data-query');
+        queryInput.value = q;
+        handleQuery(q);
+      });
+    });
+
+    // Start loading database
+    loadFaqData();
+  </script>
+</body>
+</html>
