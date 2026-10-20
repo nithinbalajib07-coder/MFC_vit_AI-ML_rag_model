@@ -1,7 +1,14 @@
 # Netlify Configuration for Saint Mary's University FAQ Assistant
 [build]
   publish = "."
+  functions = "netlify/functions"
   command = "echo 'Build successful: SMU Knowledge Assistant static assets prepared.'"
+
+# Route Gemini API requests to the Netlify serverless function
+[[redirects]]
+  from = "/api/gemini"
+  to = "/.netlify/functions/gemini"
+  status = 200
 
 # SPA fallback redirect so any deep link or refresh loads index.html
 [[redirects]]

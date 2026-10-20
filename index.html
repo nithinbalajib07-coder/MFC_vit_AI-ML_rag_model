@@ -1318,17 +1318,18 @@
     }
 
     // Submit Query & Update UI
-    function handleSubmission(queryText) {
+    async function handleSubmission(queryText) {
       if (!queryText || !queryText.trim()) return;
       const cleanQuery = queryText.trim();
       const domainVal = domainSelect.value;
+      const selectedEngine = document.querySelector('input[name="synthesis_engine"]:checked')?.value || 'gemini';
 
-      // 1. Render User Message
+      // 1. Render User Message immediately
       renderUserMessage(cleanQuery);
       queryInput.value = '';
 
       // Check Cache
-      const cacheKey = `${cleanQuery.toLowerCase()}_${domainVal}`;
+      const cacheKey = `${cleanQuery.toLowerCase()}_${domainVal}_${selectedEngine}`;
       const isCached = queryCache.has(cacheKey);
 
       let result;
@@ -1336,13 +1337,52 @@
 
       if (isCached) {
         cacheHits++;
-        timeSavedSec += 0.28;
+        timeSavedSec += 0.35;
         result = queryCache.get(cacheKey);
-        latencyMs = 12; // Instant cache hit
+        latencyMs = 15; // Instant cache hit
       } else {
         const start = performance.now();
+
+        // Step 1: Hybrid Retrieval from verified FAQ database
         result = searchKnowledgeBase(cleanQuery, domainVal);
-        latencyMs = Math.round(performance.now() - start + 140); // Natural retrieval time
+
+        // Step 2: If Gemini Cloud LLM is chosen and question is answerable, invoke Netlify Serverless Gemini Endpoint
+        if (selectedEngine === 'gemini' && result.isGrounded && result.sources && result.sources.length > 0) {
+          try {
+            // Build verified context string for Gemini prompt
+            const contextPayload = result.sources.map(s => 
+              `[${s.faq_id} | Category: ${s.category}]\nQuestion: ${s.question}\nVerified Content: ${s.snippet || s.answer}`
+            ).join('\n\n');
+
+            const geminiRes = await fetch('/api/gemini', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                query: cleanQuery,
+                context: contextPayload
+              })
+            });
+
+            if (geminiRes.ok) {
+              const geminiData = await geminiRes.json();
+              if (geminiData && !geminiData.fallback && geminiData.answer) {
+                result.answer = geminiData.answer;
+                result.model = geminiData.backend || 'Google Gemini API (Cloud LLM)';
+              } else {
+                result.model = 'High-Speed Grounded (Offline Fallback)';
+              }
+            } else {
+              result.model = 'High-Speed Grounded (Offline Fallback)';
+            }
+          } catch (e) {
+            console.warn('Netlify /api/gemini call failed, maintaining grounded offline synthesis:', e);
+            result.model = 'High-Speed Grounded (Offline Fallback)';
+          }
+        } else {
+          result.model = 'High-Speed Grounded';
+        }
+
+        latencyMs = Math.round(performance.now() - start);
         queryCache.set(cacheKey, result);
         cacheEntries++;
       }
@@ -1350,7 +1390,7 @@
       // Update Cache Analytics
       updateAnalyticsUI();
 
-      // 2. Render Assistant Message
+      // 2. Render Assistant Message with diagnostics
       renderAssistantMessage(result, latencyMs, isCached);
 
       // Smooth scroll
@@ -1450,7 +1490,7 @@
               </div>
             </div>
             <div class="diagnostics-cluster">
-              <span class="diag-tag">Model: High-Speed Grounded</span>
+              <span class="diag-tag">Model: ${escapeHtml(result.model || 'High-Speed Grounded')}</span>
               <span class="diag-tag">Strategy: hybrid_rrf</span>
             </div>
           </div>
