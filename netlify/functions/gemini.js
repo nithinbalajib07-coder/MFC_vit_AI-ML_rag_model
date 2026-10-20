@@ -1,8 +1,7 @@
 // Netlify Serverless Function: Google Gemini API Connector
-// Securely reads GEMINI_API_KEY from Netlify Environment Variables
+// Securely reads GEMINI_API_KEY / GOOGLE_API_KEY from Netlify Environment Variables
 
 exports.handler = async (event) => {
-  // Handle CORS Preflight
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -29,10 +28,16 @@ exports.handler = async (event) => {
     const payload = JSON.parse(event.body || '{}');
     const query = payload.query || '';
     const context = payload.context || '';
-    const clientKey = payload.apiKey || '';
+    const clientKey = (payload.apiKey || '').trim();
 
-    // Prioritize Netlify Environment Variable GEMINI_API_KEY
-    const apiKey = process.env.GEMINI_API_KEY || clientKey;
+    // Check all common environment variable variations + client key override
+    const apiKey = (
+      process.env.GEMINI_API_KEY ||
+      process.env.GOOGLE_API_KEY ||
+      process.env.GEMINI_KEY ||
+      process.env.GOOGLE_GEMINI_API_KEY ||
+      clientKey
+    ).trim();
 
     if (!apiKey) {
       return {
@@ -40,7 +45,7 @@ exports.handler = async (event) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           fallback: true,
-          error: 'GEMINI_API_KEY is not configured in Netlify environment variables.'
+          error: 'GEMINI_API_KEY is not set in Netlify Environment Variables. (Remember to re-deploy your site after adding environment variables in Netlify).'
         })
       };
     }
@@ -63,8 +68,15 @@ ${query}
 
 Answer:`;
 
-    // Candidate Gemini models in order of priority
-    const models = ['gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-2.0-flash'];
+    // Verified active Google Gemini models
+    const models = [
+      'gemini-3.5-flash',
+      'gemini-3.5-flash-lite',
+      'gemini-flash-lite-latest',
+      'gemini-3.8-flash',
+      'gemini-flash-latest'
+    ];
+
     let generatedText = null;
     let modelUsed = null;
     let lastError = null;
@@ -98,8 +110,8 @@ Answer:`;
             break;
           }
         } else {
-          const errData = await response.text();
-          lastError = `Model ${model} returned HTTP ${response.status}: ${errData}`;
+          const errText = await response.text();
+          lastError = `Model ${model} returned HTTP ${response.status}: ${errText}`;
         }
       } catch (fetchErr) {
         lastError = fetchErr.message;
@@ -124,7 +136,7 @@ Answer:`;
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           fallback: true,
-          error: lastError || 'Gemini API call unsuccessful, triggering offline synthesizer.'
+          error: lastError || 'All Gemini models exhausted. Triggering local synthesizer.'
         })
       };
     }
@@ -135,7 +147,7 @@ Answer:`;
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         fallback: true,
-        error: `Serverless function error: ${err.message}`
+        error: `Serverless function exception: ${err.message}`
       })
     };
   }
